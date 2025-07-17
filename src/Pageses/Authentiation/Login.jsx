@@ -2,12 +2,14 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { NavLink } from "react-router";
 import useAuth from "../../hooks/useAuth";
+import toast from "react-hot-toast";
 
 const Login = () => {
     const {signInWithGoogle,} = useAuth();
   const { register, handleSubmit, formState: { errors } } = useForm();
   const onSubmit = (data) => {
     // console.log(data)
+    
   };
 
 //   google login
@@ -15,6 +17,7 @@ const Login = () => {
     signInWithGoogle()
     .then(result=>{
         console.log(result.user)
+        toast.success("Login successful")
     })
     .catch(error=>{
         console.error(error)

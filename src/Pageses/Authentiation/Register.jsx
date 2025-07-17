@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
 import { NavLink } from "react-router";
+import toast from "react-hot-toast";
 
 const Register = () => {
   const { createUser, signInWithGoogle } = useAuth();
@@ -25,6 +26,7 @@ const Register = () => {
     signInWithGoogle()
     .then(result=>{
         console.log(result.user)
+        toast.success("Login Successful")
     })
     .catch(error=>{
         console.error(error)

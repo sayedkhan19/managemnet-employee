@@ -7,6 +7,7 @@ import ErrorPage from "../Pageses/Error/ErrorPage";
 import AuthLayout from "../layouts/AuthLayout";
 import Login from "../Pageses/Authentiation/Login";
 import Register from "../Pageses/Authentiation/Register";
+import AboutUs from "../Pageses/Home-Pageses/AboutUs";
 
 export const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ export const router = createBrowserRouter([
         {
             index: true,
             Component: Home,
+        },
+        {
+            path:"/about",
+            Component:AboutUs,
         }
     ]
   },
