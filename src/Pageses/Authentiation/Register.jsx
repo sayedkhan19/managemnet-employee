@@ -3,7 +3,7 @@ import useAuth from "../../hooks/useAuth";
 import { NavLink } from "react-router";
 
 const Register = () => {
-  const { createUser } = useAuth();
+  const { createUser, signInWithGoogle } = useAuth();
   const {
     register,
     handleSubmit,
@@ -19,6 +19,16 @@ const Register = () => {
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  const handleGoogleSignIn = ()=>{
+    signInWithGoogle()
+    .then(result=>{
+        console.log(result.user)
+    })
+    .catch(error=>{
+        console.error(error)
+    })
   };
 
   return (
@@ -143,6 +153,7 @@ const Register = () => {
 
       <div className="w-full max-w-lg mt-4">
         <button
+        onClick={handleGoogleSignIn}
           type="button"
           className="btn bg-white text-black border-[#e5e5e5] w-full flex items-center gap-2 justify-center"
         >
