@@ -6,6 +6,7 @@ import Home from "../Pageses/Home-Pageses/Home";
 import ErrorPage from "../Pageses/Error/ErrorPage";
 import AuthLayout from "../layouts/AuthLayout";
 import Login from "../Pageses/Authentiation/Login";
+import Register from "../Pageses/Authentiation/Register";
 
 export const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ export const router = createBrowserRouter([
         {
             path: "login",
             Component: Login,
+        },
+        {
+            path: "register",
+            Component: Register,
         }
     ]
   }
