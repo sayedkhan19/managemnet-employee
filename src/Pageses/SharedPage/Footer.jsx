@@ -7,10 +7,11 @@ const Footer = () => {
         
         {/* Company Info */}
         <div>
-          <h2 className="text-2xl font-bold mb-2">🚚 ParcelXpress</h2>
+          <h2 className="text-2xl font-bold mb-2">📋 ManageEm</h2>
           <p className="opacity-80 leading-relaxed">
-            Reliable, fast, and secure parcel delivery across all 64 districts of Bangladesh. Trusted by thousands.
+            ManageEm is your all-in-one employee management system — track workloads, monitor contracts, handle payrolls, and empower your HR with intelligent tools.
           </p>
+
         </div>
 
         {/* Quick Links */}
