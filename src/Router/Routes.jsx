@@ -11,6 +11,7 @@ import AboutUs from "../Pageses/Home-Pageses/AboutUs";
 import ContactUs from "../Pageses/Home-Pageses/ContactUs";
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
 import DashboardLayout from "../layouts/DashBoard layout/DashboardLayout";
+import DashboardHome from "../layouts/DashBoard layout/DashboardHome";
 
 export const router = createBrowserRouter([
   {
@@ -54,7 +55,8 @@ export const router = createBrowserRouter([
     </PrivateRoute>,
     children: [
       {
-        path: ""
+        index : true,
+        element: <DashboardHome></DashboardHome>
       }
     ]
   },

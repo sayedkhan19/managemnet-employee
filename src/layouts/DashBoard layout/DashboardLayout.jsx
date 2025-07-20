@@ -23,9 +23,18 @@ const DashboardLayout = () => {
         ${drawerOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 md:relative md:block`}
       >
         <div className="p-4 text-center border-b bg-blue-50">
-          <h2 className="text-xl font-bold text-blue-600">Employee Dashboard</h2>
+          <h2 className="text-xl font-bold text-blue-600">Dashboard</h2>
         </div>
         <nav className="flex flex-col p-4 space-y-2">
+         
+          <Link
+            to="/"
+            className="px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
+            onClick={() => setDrawerOpen(false)} // close on mobile
+          >
+            Home
+          </Link>
+         
           <Link
             to="/dashboard/profile"
             className="px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
@@ -33,6 +42,8 @@ const DashboardLayout = () => {
           >
             My Profile
           </Link>
+         
+         
           <Link
             to="/dashboard/workflow"
             className="px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
@@ -40,6 +51,7 @@ const DashboardLayout = () => {
           >
             Workflow (Later)
           </Link>
+         
           <Link
             to="/dashboard/salary"
             className="px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"

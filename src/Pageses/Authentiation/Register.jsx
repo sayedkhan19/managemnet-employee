@@ -2,9 +2,12 @@ import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
 import { NavLink } from "react-router";
 import toast from "react-hot-toast";
+import axios from "axios";
+import { useState } from "react";
 
 const Register = () => {
-  const { createUser, signInWithGoogle } = useAuth();
+  const { createUser, signInWithGoogle, updateUserProfile } = useAuth();
+  const [profilePic, setProfilePic] = useState("")
   const {
     register,
     handleSubmit,
@@ -16,6 +19,23 @@ const Register = () => {
     createUser(data.email, data.password)
       .then((result) => {
         console.log(result.user);
+
+        //update user info in the database
+
+        //update user profile in firebase
+        const userProfile = {
+              displayName : data.name,
+              photoURL : profilePic
+        }
+        updateUserProfile(userProfile)
+        .then(() =>{
+          console.log("Profile Pic updated")
+        })
+        .catch(error=>{
+          console.log(error);
+        })
+
+
       })
       .catch((error) => {
         console.log(error);
@@ -32,6 +52,21 @@ const Register = () => {
         console.error(error)
     })
   };
+
+  //img upload
+  const handleImgUpload = async(e) =>{
+    const image = e.target.files[0];
+    console.log(image);
+   
+    const formData = new FormData();
+    formData.append("image", image)
+    
+    const imageUploadUrl = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMAGE_UPLOAD_KEY}`;
+    
+    const res = await axios.post(imageUploadUrl, formData);
+
+    setProfilePic(res.data.data.url);
+  }
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8">
@@ -126,15 +161,16 @@ const Register = () => {
           <p className="text-red-500 text-sm">{errors.salary.message}</p>
         )}
 
-        {/* 
+        
         <input
           type="file"
+          onChange={handleImgUpload}
           accept="image/*"
-          {...register("photo", { required: "Photo is required" })}
+          // {...register("photo", { required: "Photo is required" })}
           className="file-input file-input-bordered w-full"
         />
         {errors.photo && <p className="text-red-500 text-sm">{errors.photo.message}</p>} 
-        */}
+       
 
         <button
           type="submit"
