@@ -4,10 +4,12 @@ import { NavLink } from "react-router";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useState } from "react";
+import useAxios from "../../hooks/useAxios";
 
 const Register = () => {
   const { createUser, signInWithGoogle, updateUserProfile } = useAuth();
-  const [profilePic, setProfilePic] = useState("")
+  const [profilePic, setProfilePic] = useState("");
+  const axiosInstance = useAxios();
   const {
     register,
     handleSubmit,
@@ -17,10 +19,26 @@ const Register = () => {
   const onSubmit = (data) => {
     console.log(data);
     createUser(data.email, data.password)
-      .then((result) => {
+      .then(async(result) => {
         console.log(result.user);
 
         //update user info in the database
+        const userInfo = {
+          name: data.name,
+          email: data.email,
+          role: data.role,
+          bank_account_no: data.bank_account_no,
+          designation: data.designation,
+          salary: parseFloat(data.salary),
+          photoURL: profilePic,
+          createdAt: new Date().toISOString(),
+          last_login: new Date().toISOString(),
+          isVerified: false,
+          ifFired: false,
+        };
+
+        const userRes = await axiosInstance.post("/users", userInfo);
+        console.log(userRes.data);
 
         //update user profile in firebase
         const userProfile = {
