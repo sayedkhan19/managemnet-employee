@@ -8,6 +8,9 @@ import AuthLayout from "../layouts/AuthLayout";
 import Login from "../Pageses/Authentiation/Login";
 import Register from "../Pageses/Authentiation/Register";
 import AboutUs from "../Pageses/Home-Pageses/AboutUs";
+import ContactUs from "../Pageses/Home-Pageses/ContactUs";
+import PrivateRoute from "../PrivateRoute/PrivateRoute";
+import DashboardLayout from "../layouts/DashBoard layout/DashboardLayout";
 
 export const router = createBrowserRouter([
   {
@@ -22,6 +25,10 @@ export const router = createBrowserRouter([
         {
             path:"/about",
             Component:AboutUs,
+        },
+        {
+          path:"/contact",
+          Component:ContactUs,
         }
     ]
   },
@@ -39,5 +46,16 @@ export const router = createBrowserRouter([
             Component: Register,
         }
     ]
-  }
+  },
+  {
+    path : "/dashboard",
+    element: <PrivateRoute>
+      <DashboardLayout></DashboardLayout>
+    </PrivateRoute>,
+    children: [
+      {
+        path: ""
+      }
+    ]
+  },
 ]);

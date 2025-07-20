@@ -21,6 +21,14 @@ const NavBar = () => {
     <>
       <li><NavLink to="/">Home</NavLink></li>
       <li><NavLink to="/about">About Us</NavLink></li>
+      <li><NavLink to="/contact">Contact Us</NavLink></li>
+
+      {
+        user && 
+        <>
+         <li><NavLink to="/dashboard">Dashboard</NavLink></li>
+        </>
+      }
     </>
   );
 
@@ -66,14 +74,14 @@ const NavBar = () => {
         )}
         {user ? (
           <NavLink
-            to="/auth/login"
+            to="/login"
             onClick={handleLogOut}
             className="btn btn-primary"
           >
             Log out
           </NavLink>
         ) : (
-          <NavLink to="/auth/login" className="btn btn-primary">
+          <NavLink to="/login" className="btn btn-primary">
             Login
           </NavLink>
         )}

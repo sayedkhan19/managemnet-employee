@@ -1,10 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { FaUserTie, FaChartLine, FaUsersCog, FaCloud, FaShieldAlt, FaBolt } from 'react-icons/fa';
+import { div } from 'framer-motion/client';
+import NavBar from '../SharedPage/NavBar';
+import Footer from '../SharedPage/Footer';
 
 const AboutUs = () => {
   return (
-    <div className="bg-base-100 py-16 px-4 sm:px-8 md:px-16 lg:px-24 text-base-content">
+    
+   <div>
+    <div>
+        <NavBar></NavBar>
+    </div>
+     <div className="bg-base-100 py-16 px-4 sm:px-8 md:px-16 lg:px-24 text-base-content">
       <div className="max-w-6xl mx-auto text-center">
         <Link to={"/"} className="text-4xl font-bold mb-4 text-primary">About ManageEM</Link>
         <p className="text-lg max-w-3xl mx-auto mb-10">
@@ -47,6 +55,11 @@ const AboutUs = () => {
         </div>
       </div>
     </div>
+
+    <div>
+        <Footer></Footer>
+    </div>
+   </div>
   );
 };
 

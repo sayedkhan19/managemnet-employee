@@ -8,7 +8,7 @@ const HeroSection = () => {
   return (
     <div className="bg-gradient-to-r from-blue-100 to-white py-16 sm:py-20 px-4 sm:px-6 text-center">
       <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 max-w-3xl mx-auto leading-tight">
-        Empowering Your Workforce with Smart Management
+        <span className='text-blue-600'>Empowering</span> Your Workforce with Smart <span className='text-blue-600'>Management</span>
       </h1>
       <p className="text-base sm:text-lg mt-4 text-gray-600 max-w-xl mx-auto">
         Track employee tasks, performance, and payroll with ease. Your company’s growth starts here.
