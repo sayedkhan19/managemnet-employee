@@ -11,7 +11,14 @@ import Swal from "sweetalert2";
 import toast from "react-hot-toast";
 
 const WorkSheet = () => {
-  const { register, handleSubmit, reset, setValue } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { errors },
+  } = useForm();
+
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [editingData, setEditingData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -101,44 +108,56 @@ const WorkSheet = () => {
       {/* Add Task Form */}
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-wrap gap-4 items-end bg-white p-4 shadow rounded"
+        className="flex flex-col md:flex-row flex-wrap gap-4 items-start bg-white p-4 shadow rounded"
       >
-        <div>
+        <div className="w-full md:w-auto">
           <label className="block text-sm">Task</label>
-          <select {...register("task")} className="input input-bordered">
+          <select
+            {...register("task", { required: true })}
+            className="input input-bordered w-full"
+            defaultValue=""
+          >
+            <option value="" disabled>
+              Select Task
+            </option>
             <option value="Sales">Sales</option>
             <option value="Support">Support</option>
             <option value="Content">Content</option>
             <option value="Paper-work">Paper-work</option>
           </select>
+          {errors.task && (
+            <p className="text-red-500 text-sm mt-1">Please select a task</p>
+          )}
         </div>
 
-        <div>
+        <div className="w-full md:w-auto">
           <label className="block text-sm">Hours Worked</label>
           <input
             type="number"
-            {...register("hours")}
-            className="input input-bordered"
-            required
+            {...register("hours", { required: true })}
+            className="input input-bordered w-full"
           />
+          {errors.hours && (
+            <p className="text-red-500 text-sm mt-1">Hours are required</p>
+          )}
         </div>
 
-        <div>
+        <div className="w-full md:w-auto">
           <label className="block text-sm">Date</label>
           <DatePicker
             selected={selectedDate}
             onChange={(date) => setSelectedDate(date)}
-            className="input input-bordered"
+            className="input input-bordered w-full"
           />
         </div>
 
-        <button type="submit" className="btn btn-primary">
-          Add
+        <button type="submit" className="btn btn-primary w-full md:w-auto">
+          {editingData ? "Update" : "Add"}
         </button>
       </form>
 
       {/* Data Table */}
-      <div className="mt-6 overflow-x-auto">
+      <div className="mt-6 overflow-x-auto bg-white shadow rounded">
         <table className="table w-full text-sm">
           <thead>
             <tr>
@@ -154,7 +173,7 @@ const WorkSheet = () => {
                 <td>{item.task}</td>
                 <td>{item.hours}</td>
                 <td>{item.date}</td>
-                <td className="space-x-2">
+                <td className="space-x-2 whitespace-nowrap">
                   <button
                     className="btn btn-xs btn-info"
                     onClick={() => handleEdit(item)}
@@ -176,7 +195,7 @@ const WorkSheet = () => {
 
       {/* Edit Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 z-50 flex items-center justify-center">
+        <div className="fixed inset-0 bg-black bg-opacity-40 z-50 flex items-center justify-center px-4">
           <div className="bg-white p-6 rounded shadow max-w-md w-full relative">
             <button
               onClick={() => setIsModalOpen(false)}
@@ -188,22 +207,33 @@ const WorkSheet = () => {
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div>
                 <label className="block text-sm">Task</label>
-                <select {...register("task")} className="input input-bordered w-full">
+                <select
+                  {...register("task", { required: true })}
+                  className="input input-bordered w-full"
+                >
+                  <option value="" disabled>
+                    Select Task
+                  </option>
                   <option value="Sales">Sales</option>
                   <option value="Support">Support</option>
                   <option value="Content">Content</option>
                   <option value="Paper-work">Paper-work</option>
                 </select>
+                {errors.task && (
+                  <p className="text-red-500 text-sm mt-1">Please select a task</p>
+                )}
               </div>
 
               <div>
                 <label className="block text-sm">Hours Worked</label>
                 <input
                   type="number"
-                  {...register("hours")}
+                  {...register("hours", { required: true })}
                   className="input input-bordered w-full"
-                  required
                 />
+                {errors.hours && (
+                  <p className="text-red-500 text-sm mt-1">Hours are required</p>
+                )}
               </div>
 
               <div>

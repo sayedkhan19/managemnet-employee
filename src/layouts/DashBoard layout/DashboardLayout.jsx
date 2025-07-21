@@ -69,7 +69,7 @@ const DashboardLayout = () => {
       )}
 
       {/* Main Content Area */}
-      <main className="flex-1 p-4 md:p-6 overflow-y-auto bg-gray-50 min-h-screen md:ml-64">
+      <main className="flex-1 p-4 md:p-6 overflow-y-auto bg-gray-50 min-h-screen md:ml-16">
         <div className="max-w-5xl mx-auto w-full">
           <Outlet />
         </div>
