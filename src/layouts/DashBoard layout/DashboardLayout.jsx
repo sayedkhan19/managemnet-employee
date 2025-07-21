@@ -35,6 +35,19 @@ const DashboardLayout = () => {
             Home
           </Link>
          
+         {/* employee see alll work */}
+         <Link
+            to="/dashboard/work"
+            className="px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
+            onClick={() => setDrawerOpen(false)} // close on mobile
+          >
+            Work Sheet
+          </Link>
+         
+         
+         
+         
+         
           <Link
             to="/dashboard/profile"
             className="px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"

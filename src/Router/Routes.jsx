@@ -12,6 +12,7 @@ import ContactUs from "../Pageses/Home-Pageses/ContactUs";
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
 import DashboardLayout from "../layouts/DashBoard layout/DashboardLayout";
 import DashboardHome from "../layouts/DashBoard layout/DashboardHome";
+import WorkSheet from "../layouts/DashBoard layout/employee/WorkSheet";
 
 export const router = createBrowserRouter([
   {
@@ -57,6 +58,10 @@ export const router = createBrowserRouter([
       {
         index : true,
         element: <DashboardHome></DashboardHome>
+      },
+      {
+        path: "work",
+        element: <WorkSheet></WorkSheet>
       }
     ]
   },
