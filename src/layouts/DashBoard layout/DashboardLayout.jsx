@@ -3,10 +3,10 @@ import { Link, Outlet } from "react-router";
 import { Menu } from "lucide-react";
 
 const DashboardLayout = () => {
-    const [drawerOpen, setDrawerOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen overflow-hidden">
       {/* Mobile Drawer Toggle */}
       <div className="md:hidden absolute top-4 left-4 z-50">
         <button
@@ -26,51 +26,36 @@ const DashboardLayout = () => {
           <h2 className="text-xl font-bold text-blue-600">Dashboard</h2>
         </div>
         <nav className="flex flex-col p-4 space-y-2">
-         
           <Link
             to="/"
             className="px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
-            onClick={() => setDrawerOpen(false)} // close on mobile
+            onClick={() => setDrawerOpen(false)}
           >
             Home
           </Link>
-         
-         {/* employee see alll work */}
-         <Link
+
+          <Link
             to="/dashboard/work"
-            className="px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
-            onClick={() => setDrawerOpen(false)} // close on mobile
-          >
-            Work Sheet
-          </Link>
-         
-         
-         
-         
-         
-          <Link
-            to="/dashboard/profile"
-            className="px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
-            onClick={() => setDrawerOpen(false)} // close on mobile
-          >
-            My Profile
-          </Link>
-         
-         
-          <Link
-            to="/dashboard/workflow"
             className="px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
             onClick={() => setDrawerOpen(false)}
           >
-            Workflow (Later)
+            Work Sheet
           </Link>
-         
+
+          <Link
+            to="/dashboard/profile"
+            className="px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
+            onClick={() => setDrawerOpen(false)}
+          >
+            My Profile
+          </Link>
+
           <Link
             to="/dashboard/salary"
             className="px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
             onClick={() => setDrawerOpen(false)}
           >
-            Salary Info (Later)
+            Salary Info
           </Link>
         </nav>
       </div>
@@ -84,12 +69,13 @@ const DashboardLayout = () => {
       )}
 
       {/* Main Content Area */}
-      <div className="flex-1 overflow-y-auto p-4 md:ml-64">
-        <Outlet />
-      </div>
+      <main className="flex-1 p-4 md:p-6 overflow-y-auto bg-gray-50 min-h-screen md:ml-64">
+        <div className="max-w-5xl mx-auto w-full">
+          <Outlet />
+        </div>
+      </main>
     </div>
   );
 };
-
 
 export default DashboardLayout;

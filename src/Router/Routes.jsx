@@ -13,6 +13,7 @@ import PrivateRoute from "../PrivateRoute/PrivateRoute";
 import DashboardLayout from "../layouts/DashBoard layout/DashboardLayout";
 import DashboardHome from "../layouts/DashBoard layout/DashboardHome";
 import WorkSheet from "../layouts/DashBoard layout/employee/WorkSheet";
+import Profile from "../layouts/DashBoard layout/Profile";
 
 export const router = createBrowserRouter([
   {
@@ -62,6 +63,10 @@ export const router = createBrowserRouter([
       {
         path: "work",
         element: <WorkSheet></WorkSheet>
+      },
+      {
+        path:"profile",
+        element: <Profile></Profile>,
       }
     ]
   },
