@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
+import { NavLink } from "react-router";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 
 const EmployeeAll = () => {
-  const { user } = useAuth();
+    const { user } = useAuth();
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
@@ -82,7 +83,7 @@ const EmployeeAll = () => {
         toast.error("Failed to send payment request.");
       }
     } catch (err) {
-      toast.error("You cant pay dublicate same month & year date.");
+      toast.error("You can't pay duplicate for same month & year.");
     }
   };
 
@@ -138,7 +139,13 @@ const EmployeeAll = () => {
             {employees?.map((emp) => (
               <tr key={emp._id}>
                 <td>{emp.name}</td>
-                <td>{emp.email}</td>
+                
+                <td>
+  <p>{emp.email}</p>
+  <p className="text-sm text-gray-500">Acct: {emp.bank_account_no || "N/A"}</p>
+</td>
+
+                
                 <td>{emp.designation}</td>
                 <td>${emp.salary}</td>
                 <td>
@@ -176,6 +183,12 @@ const EmployeeAll = () => {
                       </button>
                     </>
                   )}
+                  <NavLink
+                    to={`/dashboard/employee-details/${emp._id}`}
+                    className="btn btn-sm btn-outline"
+                  >
+                    Details
+                  </NavLink>
                 </td>
               </tr>
             ))}
