@@ -49,7 +49,9 @@ const DashboardLayout = () => {
           >
             My Profile
           </Link>
+               
 
+               {/*salary  */}
           <Link
             to="/dashboard/salary"
             className="px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
@@ -57,8 +59,33 @@ const DashboardLayout = () => {
           >
             Salary Info
           </Link>
+
+          {/* Hr all route */}
+          <Link
+            to="/dashboard/employee"
+            className="px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
+            onClick={() => setDrawerOpen(false)}
+          >
+            All Employee
+          </Link>
+         
+         
+          {/* Hr all route */}
+          <Link
+            to="/dashboard/payment"
+            className="px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
+            onClick={() => setDrawerOpen(false)}
+          >
+            Payments
+          </Link>
+       
+       
         </nav>
       </div>
+
+      
+      
+
 
       {/* Overlay for Mobile */}
       {drawerOpen && (

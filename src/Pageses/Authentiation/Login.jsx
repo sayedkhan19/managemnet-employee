@@ -24,7 +24,7 @@ const Login = () => {
         navigate(from, { replace: true });
       })
       .catch((error) => {
-        console.error(error);
+        // console.error(error);
         toast.error("Login failed. Please check your credentials.");
       });
   };

@@ -168,7 +168,7 @@ const WorkSheet = () => {
             </tr>
           </thead>
           <tbody>
-            {worksheets.map((item) => (
+            {worksheets && worksheets?.map((item) => (
               <tr key={item._id}>
                 <td>{item.task}</td>
                 <td>{item.hours}</td>

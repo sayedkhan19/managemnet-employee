@@ -14,6 +14,8 @@ import DashboardLayout from "../layouts/DashBoard layout/DashboardLayout";
 import DashboardHome from "../layouts/DashBoard layout/DashboardHome";
 import WorkSheet from "../layouts/DashBoard layout/employee/WorkSheet";
 import Profile from "../layouts/DashBoard layout/Profile";
+import EmployeeAll from "../layouts/DashBoard layout/hr/EmployeeAll";
+import Payment from "../layouts/DashBoard layout/admin/Payments/Payment";
 
 export const router = createBrowserRouter([
   {
@@ -67,6 +69,14 @@ export const router = createBrowserRouter([
       {
         path:"profile",
         element: <Profile></Profile>,
+      },
+      {
+        path: "employee",
+        element: <EmployeeAll></EmployeeAll>
+      },
+      {
+        path: 'payment',
+        element: <Payment></Payment>,
       }
     ]
   },

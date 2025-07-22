@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
-import { NavLink } from "react-router";
+import { NavLink, useLocation, useNavigate } from "react-router";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useState } from "react";
@@ -10,6 +10,9 @@ const Register = () => {
   const { createUser, signInWithGoogle, updateUserProfile } = useAuth();
   const [profilePic, setProfilePic] = useState("");
   const axiosInstance = useAxios();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
   const {
     register,
     handleSubmit,
@@ -21,6 +24,7 @@ const Register = () => {
     createUser(data.email, data.password)
       .then(async(result) => {
         console.log(result.user);
+        navigate(from);
 
         //update user info in the database
         const userInfo = {
@@ -65,6 +69,7 @@ const Register = () => {
     .then(result=>{
         console.log(result.user)
         toast.success("Login Successful")
+        navigate(from);
     })
     .catch(error=>{
         console.error(error)
