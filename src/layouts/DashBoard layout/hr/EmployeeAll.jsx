@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import toast from "react-hot-toast";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAuth from "../../../hooks/useAuth";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+
 
 const EmployeeAll = () => {
   const { user } = useAuth();
@@ -13,20 +13,20 @@ const EmployeeAll = () => {
   const [role, setRole] = useState(null);
   const axiosSecure = useAxiosSecure();
 
-  // Get HR/Admin role
+  // ✅ Fetch user role
   useEffect(() => {
-    const getRole = async () => {
+    const fetchRole = async () => {
       try {
         const res = await axiosSecure.get(`/auth-role?email=${user?.email}`);
-        setRole(res.data.role);
+        setRole(res.data?.role);
       } catch (err) {
         console.error("Failed to fetch role", err);
       }
     };
-    if (user?.email) getRole();
+    if (user?.email) fetchRole();
   }, [user, axiosSecure]);
 
-  // Fetch employees
+  // ✅ Fetch all employees
   const { data: employees = [], isLoading, refetch } = useQuery({
     queryKey: ["employees"],
     queryFn: async () => {
@@ -35,9 +35,31 @@ const EmployeeAll = () => {
     },
   });
 
+  // ✅ Fetch all salary requests
+  const { data: salaryRequests = [] } = useQuery({
+    queryKey: ["salaryRequests"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/salary-requests");
+      return res.data;
+    },
+  });
+
+  // ✅ Send payment request
   const handleSendRequest = async () => {
     if (!month || !year) {
-      toast.error("Month and Year are required!");
+      toast.error("Please select Month and Year!");
+      return;
+    }
+
+    const isDuplicate = salaryRequests.some(
+      (req) =>
+        req.email === selectedEmployee.email &&
+        req.month === month &&
+        req.year === year
+    );
+
+    if (isDuplicate) {
+      toast.error("Salary already requested for this month and year!");
       return;
     }
 
@@ -47,18 +69,20 @@ const EmployeeAll = () => {
       salary: selectedEmployee.salary,
       month,
       year,
+      status: "pending",
     };
 
     try {
-      const res = await axios.post("/salary-request", paymentData);
+      const res = await axiosSecure.post("/salary-request", paymentData);
       if (res.data.insertedId) {
         toast.success("Payment request sent!");
         setSelectedEmployee(null);
+        refetch();
       } else {
-        toast.error("Failed to send request.");
+        toast.error("Failed to send payment request.");
       }
     } catch (err) {
-      toast.error("Error sending request");
+      toast.error("You cant pay dublicate same month & year date.");
     }
   };
 
@@ -68,25 +92,31 @@ const EmployeeAll = () => {
         isVerified: !currentStatus,
       });
       if (res.data.modifiedCount > 0) {
-        toast.success("Verification status updated");
+        toast.success("Verification updated");
         refetch();
-      } else {
-        toast.error("Failed to update verification");
       }
     } catch (err) {
       toast.error("Error updating verification");
     }
   };
 
-  if (isLoading) return <div>Loading...</div>;
-
   const months = [
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December",
   ];
-
   const currentYear = new Date().getFullYear();
   const years = [currentYear - 1, currentYear, currentYear + 1];
+
+  if (isLoading) return <div className="p-4">Loading...</div>;
+
+  const isDuplicateRequest = () => {
+    return salaryRequests.some(
+      (req) =>
+        req.email === selectedEmployee?.email &&
+        req.month === month &&
+        req.year === year
+    );
+  };
 
   return (
     <div className="p-4">
@@ -100,11 +130,12 @@ const EmployeeAll = () => {
               <th>Designation</th>
               <th>Salary</th>
               <th>Status</th>
+              <th>Payment</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            {employees.map((emp) => (
+            {employees?.map((emp) => (
               <tr key={emp._id}>
                 <td>{emp.name}</td>
                 <td>{emp.email}</td>
@@ -112,27 +143,38 @@ const EmployeeAll = () => {
                 <td>${emp.salary}</td>
                 <td>
                   {emp.isVerified ? (
-                    <span className="text-green-600 font-medium">Verified</span>
+                    <span className="text-green-600">Verified</span>
                   ) : (
-                    <span className="text-red-500 font-medium">Unverified</span>
+                    <span className="text-red-500">Unverified</span>
+                  )}
+                </td>
+                <td>
+                  {emp.paymentStatus === "pending" ? (
+                    <span className="text-yellow-600 font-medium">Pending</span>
+                  ) : (
+                    <span className="text-gray-400">—</span>
                   )}
                 </td>
                 <td className="flex flex-wrap gap-2">
                   {role === "HR" && (
-                    <button
-                      className="btn btn-sm btn-primary"
-                      onClick={() => setSelectedEmployee(emp)}
-                    >
-                      Pay
-                    </button>
-                  )}
-                  {role === "HR" && (
-                    <button
-                      className="btn btn-sm btn-secondary"
-                      onClick={() => handleVerify(emp._id, emp.isVerified)}
-                    >
-                      {emp.isVerified ? "Unverify" : "Verify"}
-                    </button>
+                    <>
+                      <button
+                        className="btn btn-sm btn-primary"
+                        onClick={() => {
+                          setMonth("");
+                          setYear("");
+                          setSelectedEmployee(emp);
+                        }}
+                      >
+                        Pay
+                      </button>
+                      <button
+                        className="btn btn-sm btn-secondary"
+                        onClick={() => handleVerify(emp._id, emp.isVerified)}
+                      >
+                        {emp.isVerified ? "Unverify" : "Verify"}
+                      </button>
+                    </>
                   )}
                 </td>
               </tr>
@@ -141,7 +183,7 @@ const EmployeeAll = () => {
         </table>
       </div>
 
-      {/* Modal */}
+      {/* ✅ Modal */}
       {selectedEmployee && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-lg w-[90%] max-w-md">
@@ -172,7 +214,7 @@ const EmployeeAll = () => {
                 ))}
               </select>
             </div>
-            <div className="mb-4">
+            <div className="mb-2">
               <label className="block font-medium">Year</label>
               <select
                 value={year}
@@ -187,6 +229,14 @@ const EmployeeAll = () => {
                 ))}
               </select>
             </div>
+
+            {/* ❌ Duplicate alert */}
+            {month && year && isDuplicateRequest() && (
+              <p className="text-red-500 text-sm mt-2 mb-2">
+                ❌ You already paid for this month and year!
+              </p>
+            )}
+
             <div className="flex justify-end gap-2">
               <button
                 className="btn btn-secondary"
@@ -194,7 +244,11 @@ const EmployeeAll = () => {
               >
                 Cancel
               </button>
-              <button className="btn btn-primary" onClick={handleSendRequest}>
+              <button
+                className="btn btn-primary"
+                onClick={handleSendRequest}
+                disabled={!month || !year || isDuplicateRequest()}
+              >
                 Send Request
               </button>
             </div>
