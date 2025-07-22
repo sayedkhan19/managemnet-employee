@@ -76,7 +76,7 @@ const DashboardLayout = () => {
             className="px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
             onClick={() => setDrawerOpen(false)}
           >
-            Payments
+            Payments Status
           </Link>
        
        

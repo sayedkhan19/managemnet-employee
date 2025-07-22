@@ -1,10 +1,12 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
+
+import { useNavigate } from "react-router";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 
-
 const Payment = () => {
-    const axiosSecure = useAxiosSecure();
+  const axiosSecure = useAxiosSecure();
+  const navigate = useNavigate();
 
   const { data: requests = [], isLoading, error } = useQuery({
     queryKey: ["pendingRequests"],
@@ -16,6 +18,10 @@ const Payment = () => {
 
   if (isLoading) return <div className="p-4">Loading...</div>;
   if (error) return <div className="p-4 text-red-500">Failed to load requests</div>;
+
+  const handlePay = (id) => {
+    navigate(`/dashboard/pay-salary/${id}`);
+  };
 
   return (
     <div className="p-4">
@@ -30,6 +36,7 @@ const Payment = () => {
               <th>Month</th>
               <th>Year</th>
               <th>Status</th>
+              <th>Action</th> {/* New column */}
             </tr>
           </thead>
           <tbody>
@@ -42,6 +49,14 @@ const Payment = () => {
                 <td>{item.year}</td>
                 <td>
                   <span className="badge badge-warning capitalize">{item.status}</span>
+                </td>
+                <td>
+                  <button
+                    onClick={() => handlePay(item._id)}
+                    className="btn btn-sm btn-primary"
+                  >
+                    Pay
+                  </button>
                 </td>
               </tr>
             ))}

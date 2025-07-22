@@ -16,6 +16,7 @@ import WorkSheet from "../layouts/DashBoard layout/employee/WorkSheet";
 import Profile from "../layouts/DashBoard layout/Profile";
 import EmployeeAll from "../layouts/DashBoard layout/hr/EmployeeAll";
 import Payment from "../layouts/DashBoard layout/admin/Payments/Payment";
+import PaySalary from "../layouts/DashBoard layout/admin/PaySalary";
 
 export const router = createBrowserRouter([
   {
@@ -77,6 +78,11 @@ export const router = createBrowserRouter([
       {
         path: 'payment',
         element: <Payment></Payment>,
+
+      },
+      {
+        path: "pay-salary/:id",
+        element: <PaySalary></PaySalary>,
       }
     ]
   },
