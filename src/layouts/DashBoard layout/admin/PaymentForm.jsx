@@ -29,6 +29,8 @@ const PaymentForm = () => {
 
 console.log(salaryInfo);
 const salary = salaryInfo.salary;
+const amountInCents = salary*100;
+console.log(amountInCents)
 
     const handleSubmit = async (e) =>{
     e.preventDefault();
@@ -51,8 +53,37 @@ const salary = salaryInfo.salary;
     }
     else{
         setError('');
-        console.log('paymentMethod:', paymentMethod)
+        console.log('paymentMethod:', paymentMethod);
     }
+
+    /// create payment intent step-2
+    const res = await axiosSecure.post('/payment-intent', {
+        amountInCents,
+        Idsalary,
+    });
+
+    const clientSecret = res.data.clientSecret;
+
+    const result = await stripe.confirmCardPayment(clientSecret, {
+        payment_method:{
+            card: elements.getElement(CardElement),
+            billing_details: {
+                name: 'Jenney Rosen',
+            },
+        },
+    });
+
+    if(result.error){
+        console.log(result.error.message)
+    } else{
+        if(result.paymentIntent.status === "succeeded"){
+            console.log("Payment succeed");
+            console.log(result);
+        }
+    }
+   
+   
+    // console.log('res form intent:',res)
 };
 
 
