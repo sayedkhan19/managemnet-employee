@@ -18,6 +18,9 @@ import EmployeeAll from "../layouts/DashBoard layout/hr/EmployeeAll";
 import Payment from "../layouts/DashBoard layout/admin/Payments/Payment";
 import PaySalary from "../layouts/DashBoard layout/admin/PaySalary";
 import EmployeeDetails from "../layouts/DashBoard layout/hr/EmployeeDetails";
+import SalaryInfoAll from "../layouts/DashBoard layout/admin/SalaryInfoAll";
+import MyPaymentHistory from "../layouts/DashBoard layout/employee/MyPaymentHistory";
+import VerifiedHRList from "../layouts/DashBoard layout/admin/VerifiedHRList";
 
 export const router = createBrowserRouter([
   {
@@ -88,6 +91,18 @@ export const router = createBrowserRouter([
       {
         path: "employee-details/:id",
         element: <EmployeeDetails></EmployeeDetails>
+      },
+      {
+        path: 'salary',
+        element: <SalaryInfoAll></SalaryInfoAll>
+      },
+      {
+        path : "my-payments",
+        element: <MyPaymentHistory></MyPaymentHistory>,
+      },
+      {
+        path: "verified-hrs",
+        element: <VerifiedHRList></VerifiedHRList>
       }
     ]
   },

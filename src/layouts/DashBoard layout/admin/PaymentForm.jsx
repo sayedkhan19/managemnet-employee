@@ -1,8 +1,10 @@
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import useAuth from '../../../hooks/useAuth';
+import toast from 'react-hot-toast';
 
 
 
@@ -13,6 +15,8 @@ const PaymentForm = () => {
     const {Idsalary}  = useParams();
     // console.log(Idsalary);
     const axiosSecure = useAxiosSecure();
+    const {user} = useAuth();
+    const navigate = useNavigate();
 
     const { isPending, data: salaryInfo = {} } = useQuery({
         queryKey: ['payment', Idsalary],
@@ -68,17 +72,36 @@ console.log(amountInCents)
         payment_method:{
             card: elements.getElement(CardElement),
             billing_details: {
-                name: 'Jenney Rosen',
+                name: user.displayName,
+                email: user.email,
             },
         },
     });
 
     if(result.error){
-        console.log(result.error.message)
+        setError(result.error.message);
     } else{
+        setError('');
         if(result.paymentIntent.status === "succeeded"){
             console.log("Payment succeed");
             console.log(result);
+            // mark salary paid also ceate history
+            const paymentData = {
+                Idsalary,
+                email: user.email,
+                amountInCents,
+                transactionId: result.paymentIntent.id,
+                paymentMethod: result.paymentIntent.payment_method_types,
+
+
+            }
+
+            const paymentRes = await axiosSecure.post('/payment-success', paymentData);
+            if(paymentRes.data.insertedId){
+                // console.log("payment successfully")
+                toast.success("payment successfully")
+                navigate("/dashboard/payment")
+            }
         }
     }
    

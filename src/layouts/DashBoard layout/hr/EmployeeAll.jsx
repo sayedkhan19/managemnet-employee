@@ -5,16 +5,14 @@ import { NavLink } from "react-router";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
-
 const EmployeeAll = () => {
-    const { user } = useAuth();
+  const { user } = useAuth();
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
   const [role, setRole] = useState(null);
   const axiosSecure = useAxiosSecure();
 
-  // ✅ Fetch user role
   useEffect(() => {
     const fetchRole = async () => {
       try {
@@ -27,7 +25,6 @@ const EmployeeAll = () => {
     if (user?.email) fetchRole();
   }, [user, axiosSecure]);
 
-  // ✅ Fetch all employees
   const { data: employees = [], isLoading, refetch } = useQuery({
     queryKey: ["employees"],
     queryFn: async () => {
@@ -36,7 +33,6 @@ const EmployeeAll = () => {
     },
   });
 
-  // ✅ Fetch all salary requests
   const { data: salaryRequests = [] } = useQuery({
     queryKey: ["salaryRequests"],
     queryFn: async () => {
@@ -45,7 +41,6 @@ const EmployeeAll = () => {
     },
   });
 
-  // ✅ Send payment request
   const handleSendRequest = async () => {
     if (!month || !year) {
       toast.error("Please select Month and Year!");
@@ -139,20 +134,20 @@ const EmployeeAll = () => {
             {employees?.map((emp) => (
               <tr key={emp._id}>
                 <td>{emp.name}</td>
-                
                 <td>
-  <p>{emp.email}</p>
-  <p className="text-sm text-gray-500">Acct: {emp.bank_account_no || "N/A"}</p>
-</td>
-
-                
+                  <p>{emp.email}</p>
+                  <p className="text-sm text-gray-500">Acct: {emp.bank_account_no || "N/A"}</p>
+                </td>
                 <td>{emp.designation}</td>
                 <td>${emp.salary}</td>
                 <td>
                   {emp.isVerified ? (
-                    <span className="text-green-600">Verified</span>
+                    <span className="text-green-600 font-medium">Verified</span>
                   ) : (
-                    <span className="text-red-500">Unverified</span>
+                    <div>
+                      <span className="text-red-500 font-medium">Unverified</span>
+                      <p className="text-xs text-gray-400">Verify to enable payment</p>
+                    </div>
                   )}
                 </td>
                 <td>
@@ -166,12 +161,16 @@ const EmployeeAll = () => {
                   {role === "HR" && (
                     <>
                       <button
-                        className="btn btn-sm btn-primary"
+                        className={`btn btn-sm ${emp.isVerified ? "btn-primary" : "btn-disabled bg-gray-300 text-gray-500 cursor-not-allowed"}`}
+                        disabled={!emp.isVerified}
                         onClick={() => {
-                          setMonth("");
-                          setYear("");
-                          setSelectedEmployee(emp);
+                          if (emp.isVerified) {
+                            setMonth("");
+                            setYear("");
+                            setSelectedEmployee(emp);
+                          }
                         }}
+                        title={emp.isVerified ? "Pay salary" : "Cannot pay unverified employee"}
                       >
                         Pay
                       </button>
@@ -243,7 +242,6 @@ const EmployeeAll = () => {
               </select>
             </div>
 
-            {/* ❌ Duplicate alert */}
             {month && year && isDuplicateRequest() && (
               <p className="text-red-500 text-sm mt-2 mb-2">
                 ❌ You already paid for this month and year!

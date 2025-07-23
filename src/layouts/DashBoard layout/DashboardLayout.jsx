@@ -49,6 +49,14 @@ const DashboardLayout = () => {
           >
             My Profile
           </Link>
+          
+          <Link
+            to="/dashboard/my-payments"
+            className="px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
+            onClick={() => setDrawerOpen(false)}
+          >
+            My Payment History
+          </Link>
                
 
                {/*salary  */}
@@ -57,7 +65,7 @@ const DashboardLayout = () => {
             className="px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
             onClick={() => setDrawerOpen(false)}
           >
-            Salary Info
+          admin  Salary Info
           </Link>
 
           {/* Hr all route */}
@@ -66,7 +74,7 @@ const DashboardLayout = () => {
             className="px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
             onClick={() => setDrawerOpen(false)}
           >
-            All Employee
+          hr  All Employee
           </Link>
          
          
@@ -76,7 +84,15 @@ const DashboardLayout = () => {
             className="px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
             onClick={() => setDrawerOpen(false)}
           >
-            Payments Status
+          admin  Payments Status
+          </Link>
+          
+          <Link
+            to="/dashboard/verified-hrs"
+            className="px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
+            onClick={() => setDrawerOpen(false)}
+          >
+          admin All Hr & verifed em
           </Link>
        
        
