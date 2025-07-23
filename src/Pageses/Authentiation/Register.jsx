@@ -64,22 +64,50 @@ const Register = () => {
       });
   };
 
-  const handleGoogleSignIn = ()=>{
-    signInWithGoogle()
-    .then(result=>{
-        console.log(result.user)
-        toast.success("Login Successful")
-        navigate(from);
+ const handleGoogleSignIn = () => {
+  signInWithGoogle()
+    .then(async (result) => {
+      const { user } = result;
+      const { isNewUser } = result._tokenResponse; 
+
+      // If first-time Google login, save to DB
+      if (isNewUser) {
+        const userInfo = {
+          name: user.displayName || "Unknown",
+          email: user.email,
+          role: "user", // default role
+          bank_account_no: "", // optional placeholder
+          designation: "",
+          salary: 0,
+          photoURL: user.photoURL || "",
+          createdAt: new Date().toISOString(),
+          last_login: new Date().toISOString(),
+          isVerified: false,
+          ifFired: false,
+        };
+
+        try {
+          const res = await axiosInstance.post("/users", userInfo);
+          console.log("User added:", res.data);
+        } catch (err) {
+          console.error("Failed to save Google user:", err);
+        }
+      }
+
+      toast.success("Login Successful");
+      navigate(from);
     })
-    .catch(error=>{
-        console.error(error)
-    })
-  };
+    .catch((error) => {
+      console.error("Google login error:", error);
+      toast.error("Login failed");
+    });
+};
+
 
   //img upload
   const handleImgUpload = async(e) =>{
     const image = e.target.files[0];
-    console.log(image);
+    // console.log(image);
    
     const formData = new FormData();
     formData.append("image", image)
@@ -87,8 +115,7 @@ const Register = () => {
     const imageUploadUrl = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMAGE_UPLOAD_KEY}`;
     
     const res = await axios.post(imageUploadUrl, formData);
-
-    setProfilePic(res.data.data.url);
+    setProfilePic(res.data?.data?.url);
   }
 
   return (

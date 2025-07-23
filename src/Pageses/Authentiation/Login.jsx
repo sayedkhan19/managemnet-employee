@@ -3,12 +3,14 @@ import { useForm } from "react-hook-form";
 import { NavLink, useLocation, useNavigate } from "react-router";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
+import useAxios from "../../hooks/useAxios";
 
 const Login = () => {
-  const { signIn, signInWithGoogle } = useAuth();
+  const { user, signIn, signInWithGoogle } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
+  const axiosInstance = useAxios();
 
   const {
     register,
@@ -29,18 +31,44 @@ const Login = () => {
       });
   };
 
-  const handleGoogleSignIn = () => {
-    signInWithGoogle()
-      .then((result) => {
-        console.log(result.user);
-        toast.success("Login successful");
-        navigate(from, { replace: true });
-      })
-      .catch((error) => {
-        console.error(error);
-        toast.error("Google Sign-in failed");
-      });
-  };
+const handleGoogleSignIn = () => {
+  signInWithGoogle()
+    .then(async (result) => {
+      const { user } = result;
+
+      // Build user payload
+      const newUser = {
+        name: user.displayName || "Unknown",
+        email: user.email,
+        role: "user", // default role for Google users
+        bank_account_no: "",
+        designation: "",
+        salary: 0,
+        photoURL: user.photoURL || "",
+        createdAt: new Date().toISOString(),
+        last_login: new Date().toISOString(),
+        isVerified: false,
+        ifFired: false,
+      };
+
+      try {
+        // Always attempt to post — your backend will prevent duplicates
+        const res = await axiosInstance.post("/users", newUser);
+        console.log("User handled:", res.data);
+      } catch (err) {
+        console.error("User save failed:", err);
+      }
+
+      toast.success("Login successful");
+      navigate(from, { replace: true });
+    })
+    .catch((error) => {
+      console.error("Google Sign-in failed:", error);
+      toast.error("Google Sign-in failed");
+    });
+};
+
+
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
