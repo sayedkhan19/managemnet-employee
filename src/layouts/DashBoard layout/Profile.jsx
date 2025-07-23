@@ -11,6 +11,7 @@ const Profile = () => {
     queryKey: ["userInfo", user?.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`http://localhost:5000/users/${user.email}`);
+      
       return res.data;
     },
   });

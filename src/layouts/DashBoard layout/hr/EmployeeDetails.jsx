@@ -74,9 +74,9 @@ const EmployeeDetails = () => {
         <div className="flex flex-col md:flex-row items-center gap-6">
           {/* Profile Photo */}
           <div className="flex-shrink-0">
-            {user?.photoURL ? (
+            {employee?.photoURL ? (
               <img
-                src={user.photoURL}
+                src={employee.photoURL}
                 alt="User"
                 className="w-32 h-32 rounded-full object-cover border"
               />
