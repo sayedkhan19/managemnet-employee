@@ -40,10 +40,10 @@ const handleGoogleSignIn = () => {
       const newUser = {
         name: user.displayName || "Unknown",
         email: user.email,
-        role: "user", // default role for Google users
-        bank_account_no: "",
-        designation: "",
-        salary: 0,
+        role: "Employee", // default role for Google users
+        bank_account_no: "5867352045",
+        designation: "Marketing",
+        salary: 150,
         photoURL: user.photoURL || "",
         createdAt: new Date().toISOString(),
         last_login: new Date().toISOString(),

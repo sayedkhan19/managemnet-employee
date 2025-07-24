@@ -142,10 +142,10 @@ const EmployeeAll = () => {
                 <td>${emp.salary}</td>
                 <td>
                   {emp.isVerified ? (
-                    <span className="text-green-600 font-medium">Verified</span>
+                    <span className="text-green-600 font-medium">✅Verified</span>
                   ) : (
                     <div>
-                      <span className="text-red-500 font-medium">Unverified</span>
+                      <span className="text-red-500 font-medium">❌Unverified</span>
                       <p className="text-xs text-gray-400">Verify to enable payment</p>
                     </div>
                   )}
@@ -178,7 +178,7 @@ const EmployeeAll = () => {
                         className="btn btn-sm btn-secondary"
                         onClick={() => handleVerify(emp._id, emp.isVerified)}
                       >
-                        {emp.isVerified ? "Unverify" : "Verify"}
+                        {emp.isVerified ? "❌" : "✅"}
                       </button>
                     </>
                   )}

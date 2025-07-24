@@ -77,6 +77,14 @@ const DashboardLayout = () => {
           hr  All Employee
           </Link>
          
+          <Link
+            to="/dashboard/progress"
+            className="px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
+            onClick={() => setDrawerOpen(false)}
+          >
+          hr  progress
+          </Link>
+         
          
           {/* Hr all route */}
           <Link
@@ -93,6 +101,14 @@ const DashboardLayout = () => {
             onClick={() => setDrawerOpen(false)}
           >
           admin All Hr & verifed em
+          </Link>
+       
+          <Link
+            to="/dashboard/AdminManager"
+            className="px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
+            onClick={() => setDrawerOpen(false)}
+          >
+          admin AdminManager
           </Link>
        
        

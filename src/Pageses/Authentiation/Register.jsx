@@ -75,10 +75,10 @@ const Register = () => {
         const userInfo = {
           name: user.displayName || "Unknown",
           email: user.email,
-          role: "user", // default role
-          bank_account_no: "", // optional placeholder
+          role: "Employee", // default role
+          bank_account_no: "16168592303", // optional placeholder
           designation: "",
-          salary: 0,
+          salary: 150,
           photoURL: user.photoURL || "",
           createdAt: new Date().toISOString(),
           last_login: new Date().toISOString(),
