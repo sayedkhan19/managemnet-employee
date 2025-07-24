@@ -1,9 +1,24 @@
 import React, { useState } from "react";
 import { Link, Outlet } from "react-router";
 import { Menu } from "lucide-react";
+import useUserRole from "../../hooks/useUserRole";
+import {
+  FaHome,
+  FaTasks,
+  FaUserCircle,
+  FaMoneyBillWave,
+  FaUsers,
+  FaRegChartBar,
+  FaClipboardCheck,
+  FaUserShield,
+  FaCoins,
+} from 'react-icons/fa';
+
 
 const DashboardLayout = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const { role, roleLoading } = useUserRole();
+  console.log(role)
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -26,90 +41,105 @@ const DashboardLayout = () => {
           <h2 className="text-xl font-bold text-blue-600">Dashboard</h2>
         </div>
         <nav className="flex flex-col p-4 space-y-2">
-          <Link
-            to="/"
-            className="px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
-            onClick={() => setDrawerOpen(false)}
-          >
-            Home
-          </Link>
-
-          <Link
-            to="/dashboard/work"
-            className="px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
-            onClick={() => setDrawerOpen(false)}
-          >
-            Work Sheet
-          </Link>
-
-          <Link
-            to="/dashboard/profile"
-            className="px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
-            onClick={() => setDrawerOpen(false)}
-          >
-            My Profile
-          </Link>
           
           <Link
-            to="/dashboard/my-payments"
-            className="px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
-            onClick={() => setDrawerOpen(false)}
-          >
-            My Payment History
-          </Link>
-               
+  to="/"
+  className="flex items-center gap-2 px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
+  onClick={() => setDrawerOpen(false)}
+>
+  <FaHome /> HOME
+</Link>
 
-               {/*salary  */}
-          <Link
-            to="/dashboard/salary"
-            className="px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
-            onClick={() => setDrawerOpen(false)}
-          >
-          admin  Salary Info
-          </Link>
+<Link
+  to="/dashboard/profile"
+  className="flex items-center gap-2 px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
+  onClick={() => setDrawerOpen(false)}
+>
+  <FaUserCircle /> MY PROFILE
+</Link>
 
-          {/* Hr all route */}
-          <Link
-            to="/dashboard/employee"
-            className="px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
-            onClick={() => setDrawerOpen(false)}
-          >
-          hr  All Employee
-          </Link>
-         
-          <Link
-            to="/dashboard/progress"
-            className="px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
-            onClick={() => setDrawerOpen(false)}
-          >
-          hr  progress
-          </Link>
-         
-         
-          {/* Hr all route */}
-          <Link
-            to="/dashboard/payment"
-            className="px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
-            onClick={() => setDrawerOpen(false)}
-          >
-          admin  Payments Status
-          </Link>
-          
-          <Link
-            to="/dashboard/verified-hrs"
-            className="px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
-            onClick={() => setDrawerOpen(false)}
-          >
-          admin All Hr & verifed em
-          </Link>
-       
-          <Link
-            to="/dashboard/AdminManager"
-            className="px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
-            onClick={() => setDrawerOpen(false)}
-          >
-          admin AdminManager
-          </Link>
+{ 
+
+!roleLoading && role === "Employee" && 
+  <>
+  <Link
+  to="/dashboard/work"
+  className="flex items-center gap-2 px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
+  onClick={() => setDrawerOpen(false)}
+>
+  <FaTasks /> WORK SHEET
+</Link>
+
+
+
+<Link
+  to="/dashboard/my-payments"
+  className="flex items-center gap-2 px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
+  onClick={() => setDrawerOpen(false)}
+>
+  <FaMoneyBillWave /> MY PAYMENTS HISTORY
+</Link>
+  </>
+}
+
+{
+!roleLoading && role === "HR" && (
+  <>
+    <Link
+      to="/dashboard/employee"
+      className="flex items-center gap-2 px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
+      onClick={() => setDrawerOpen(false)}
+    >
+      <FaUsers /> ALL EMPLOYEE
+    </Link>
+
+    <Link
+      to="/dashboard/progress"
+      className="flex items-center gap-2 px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
+      onClick={() => setDrawerOpen(false)}
+    >
+      <FaRegChartBar /> PROGRESS
+    </Link>
+  </>
+)}
+
+{
+!roleLoading && role === "Admin" && (
+  <>
+    <Link
+      to="/dashboard/payment"
+      className="flex items-center gap-2 px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
+      onClick={() => setDrawerOpen(false)}
+    >
+      <FaClipboardCheck /> PAYMENTS PENDING
+    </Link>
+
+    <Link
+      to="/dashboard/verified-hrs"
+      className="flex items-center gap-2 px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
+      onClick={() => setDrawerOpen(false)}
+    >
+      <FaUsers /> HR & EMPLOYEE
+    </Link>
+
+    <Link
+      to="/dashboard/AdminManager"
+      className="flex items-center gap-2 px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
+      onClick={() => setDrawerOpen(false)}
+    >
+      <FaUserShield /> ADMIN MANAGER
+    </Link>
+
+    <Link
+      to="/dashboard/salary"
+      className="flex items-center gap-2 px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
+      onClick={() => setDrawerOpen(false)}
+    >
+      <FaCoins /> SALARY INFO
+    </Link>
+  </>
+)}
+
        
        
         </nav>

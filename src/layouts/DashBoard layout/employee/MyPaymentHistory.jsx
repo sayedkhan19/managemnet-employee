@@ -41,7 +41,7 @@ const MyPaymentHistory = () => {
             {paymentHistory.map((payment, index) => (
               <tr key={payment._id} className="hover:bg-gray-50">
                 <td className="px-4 py-2">{index + 1}</td>
-                <td className="px-4 py-2">${payment.amountInCents ?? "N/A"}</td>
+                <td className="px-4 py-2">${payment.amount ?? "N/A"}</td>
                 <td className="px-4 py-2">{payment.transactionId}</td>
                 <td className="px-4 py-2">
                   {typeof payment.paymentMethod === "string"

@@ -23,6 +23,8 @@ import MyPaymentHistory from "../layouts/DashBoard layout/employee/MyPaymentHist
 import VerifiedHRList from "../layouts/DashBoard layout/admin/VerifiedHRList";
 import Progress from "../layouts/DashBoard layout/hr/Progress";
 import AdminManager from "../layouts/DashBoard layout/admin/AdminManager";
+import Forbidden from "../Pageses/Forbidden/Forbidden";
+import AdminRoute from "../PrivateRoute/AdminRoute";
 
 export const router = createBrowserRouter([
   {
@@ -41,7 +43,11 @@ export const router = createBrowserRouter([
         {
           path:"/contact",
           Component:ContactUs,
-        }
+        },
+        {
+          path: "/forbidden",
+          Component: Forbidden,
+        },
     ]
   },
   
@@ -83,7 +89,9 @@ export const router = createBrowserRouter([
       },
       {
         path: 'payment',
-        element: <Payment></Payment>,
+        element: <AdminRoute>
+          <Payment></Payment>
+        </AdminRoute>,
 
       },
       {
@@ -96,7 +104,9 @@ export const router = createBrowserRouter([
       },
       {
         path: 'salary',
-        element: <SalaryInfoAll></SalaryInfoAll>
+        element: <AdminRoute>
+          <SalaryInfoAll></SalaryInfoAll>
+        </AdminRoute>,
       },
       {
         path : "my-payments",
@@ -104,7 +114,9 @@ export const router = createBrowserRouter([
       },
       {
         path: "verified-hrs",
-        element: <VerifiedHRList></VerifiedHRList>
+        element: <AdminRoute>
+          <VerifiedHRList></VerifiedHRList>
+        </AdminRoute>,
       },
       {
         path: 'progress',
@@ -112,7 +124,9 @@ export const router = createBrowserRouter([
       },
       {
         path: "AdminManager",
-        element: <AdminManager></AdminManager>
+        element: <AdminRoute>
+          <AdminManager></AdminManager>
+        </AdminRoute>,
       }
     ]
   },
