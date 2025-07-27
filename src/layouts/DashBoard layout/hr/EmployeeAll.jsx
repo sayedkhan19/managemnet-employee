@@ -1,29 +1,42 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { NavLink } from "react-router";
+import {
+  FaMoneyCheckAlt,
+  FaCheck,
+  FaTimes,
+  FaInfoCircle,
+  FaThList,
+  FaThLarge,
+} from "react-icons/fa";
+
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const EmployeeAll = () => {
   const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
+  const [viewMode, setViewMode] = useState("table");
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
-  const [role, setRole] = useState(null);
-  const axiosSecure = useAxiosSecure();
 
-  useEffect(() => {
-    const fetchRole = async () => {
-      try {
-        const res = await axiosSecure.get(`/auth-role?email=${user?.email}`);
-        setRole(res.data?.role);
-      } catch (err) {
-        console.error("Failed to fetch role", err);
-      }
-    };
-    if (user?.email) fetchRole();
-  }, [user, axiosSecure]);
+  const currentYear = new Date().getFullYear();
+  const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+  const years = [currentYear - 1, currentYear, currentYear + 1];
+
+  const { data: roleData, isLoading: roleLoading } = useQuery({
+    queryKey: ["user-role", user?.email],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/auth-role?email=${user?.email}`);
+      return res.data?.role;
+    },
+    enabled: !!user?.email,
+  });
 
   const { data: employees = [], isLoading, refetch } = useQuery({
     queryKey: ["employees"],
@@ -41,21 +54,18 @@ const EmployeeAll = () => {
     },
   });
 
-  const handleSendRequest = async () => {
-    if (!month || !year) {
-      toast.error("Please select Month and Year!");
-      return;
-    }
-
-    const isDuplicate = salaryRequests.some(
+  const isDuplicateRequest = () => {
+    return salaryRequests.some(
       (req) =>
-        req.email === selectedEmployee.email &&
+        req.email === selectedEmployee?.email &&
         req.month === month &&
         req.year === year
     );
+  };
 
-    if (isDuplicate) {
-      toast.error("Salary already requested for this month and year!");
+  const handleSendRequest = async () => {
+    if (!month || !year) {
+      toast.error("Please select Month and Year!");
       return;
     }
 
@@ -77,7 +87,7 @@ const EmployeeAll = () => {
       } else {
         toast.error("Failed to send payment request.");
       }
-    } catch (err) {
+    } catch {
       toast.error("You can't pay duplicate for same month & year.");
     }
   };
@@ -91,160 +101,223 @@ const EmployeeAll = () => {
         toast.success("Verification updated");
         refetch();
       }
-    } catch (err) {
+    } catch {
       toast.error("Error updating verification");
     }
   };
 
-  const months = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December",
-  ];
-  const currentYear = new Date().getFullYear();
-  const years = [currentYear - 1, currentYear, currentYear + 1];
-
-  if (isLoading) return <div className="p-4">Loading...</div>;
-
-  const isDuplicateRequest = () => {
-    return salaryRequests.some(
-      (req) =>
-        req.email === selectedEmployee?.email &&
-        req.month === month &&
-        req.year === year
-    );
-  };
+  if (isLoading || roleLoading) return <div className="p-4">Loading...</div>;
 
   return (
     <div className="p-4">
-      <h2 className="text-xl font-semibold mb-4">All Employees</h2>
-      <div className="overflow-x-auto">
-        <table className="table w-full border">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Designation</th>
-              <th>Salary</th>
-              <th>Status</th>
-              <th>Payment</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {employees?.map((emp) => (
-              <tr key={emp._id}>
-                <td>{emp.name}</td>
-                <td>
-                  <p>{emp.email}</p>
-                  <p className="text-sm text-gray-500">Acct: {emp.bank_account_no || "N/A"}</p>
-                </td>
-                <td>{emp.designation}</td>
-                <td>${emp.salary}</td>
-                <td>
-                  {emp.isVerified ? (
-                    <span className="text-green-600 font-medium">✅Verified</span>
-                  ) : (
-                    <div>
-                      <span className="text-red-500 font-medium">❌Unverified</span>
-                      <p className="text-xs text-gray-400">Verify to enable payment</p>
-                    </div>
-                  )}
-                </td>
-                <td>
-                  {emp.paymentStatus === "pending" ? (
-                    <span className="text-yellow-600 font-medium">Pending</span>
-                  ) : (
-                    <span className="text-gray-400">—</span>
-                  )}
-                </td>
-                <td className="flex flex-wrap gap-2">
-                  {role === "HR" && (
-                    <>
-                      <button
-                        className={`btn btn-sm ${emp.isVerified ? "btn-primary" : "btn-disabled bg-gray-300 text-gray-500 cursor-not-allowed"}`}
-                        disabled={!emp.isVerified}
-                        onClick={() => {
-                          if (emp.isVerified) {
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-xl font-semibold">All Employees</h2>
+        <button
+          className="btn btn-sm flex items-center gap-1"
+          onClick={() =>
+            setViewMode((prev) => (prev === "table" ? "card" : "table"))
+          }
+        >
+          {viewMode === "table" ? <FaThLarge /> : <FaThList />}
+          {viewMode === "table" ? "Card View" : "Table View"}
+        </button>
+      </div>
+
+      {viewMode === "table" ? (
+        <div className="overflow-x-auto">
+          <table className="table w-full border rounded-lg">
+            <thead className="bg-gray-100">
+              <tr>
+                <th>Name</th>
+                <th>Email & Account</th>
+                <th>Designation</th>
+                <th>Salary</th>
+                <th>Status</th>
+                <th>Payment</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {employees.map((emp) => (
+                <tr key={emp._id}>
+                  <td>{emp.name}</td>
+                  <td className="break-words max-w-xs">
+                    <p>{emp.email}</p>
+                    <p className="text-sm text-gray-500">
+                      Acct: {emp.bank_account_no || "N/A"}
+                    </p>
+                  </td>
+                  <td>{emp.designation}</td>
+                  <td>${emp.salary}</td>
+                  <td>
+                    {emp.isVerified ? (
+                      <span className="text-green-600 font-medium">
+                        ✅ Verified
+                      </span>
+                    ) : (
+                      <div>
+                        <span className="text-red-500 font-medium">
+                          ❌ Unverified
+                        </span>
+                        <p className="text-xs text-gray-400">
+                          Verify to enable payment
+                        </p>
+                      </div>
+                    )}
+                  </td>
+                  <td>
+                    {emp.paymentStatus === "pending" ? (
+                      <span className="text-yellow-600 font-medium">
+                        Pending
+                      </span>
+                    ) : (
+                      <span className="text-gray-400">—</span>
+                    )}
+                  </td>
+                  <td className="flex flex-wrap gap-2">
+                    {roleData === "HR" && (
+                      <>
+                        <button
+                          className={`btn btn-sm flex items-center gap-1 ${
+                            emp.isVerified
+                              ? "btn-primary"
+                              : "btn-disabled bg-gray-300 text-gray-500"
+                          }`}
+                          onClick={() => {
                             setMonth("");
                             setYear("");
                             setSelectedEmployee(emp);
-                          }
-                        }}
-                        title={emp.isVerified ? "Pay salary" : "Cannot pay unverified employee"}
-                      >
-                        Pay
-                      </button>
-                      <button
-                        className="btn btn-sm btn-secondary"
-                        onClick={() => handleVerify(emp._id, emp.isVerified)}
-                      >
-                        {emp.isVerified ? "❌" : "✅"}
-                      </button>
-                    </>
-                  )}
-                  <NavLink
-                    to={`/dashboard/employee-details/${emp._id}`}
-                    className="btn btn-sm btn-outline"
-                  >
-                    Details
-                  </NavLink>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+                          }}
+                          disabled={!emp.isVerified}
+                        >
+                          <FaMoneyCheckAlt /> Pay
+                        </button>
+                        <button
+                          className="btn btn-sm btn-secondary flex items-center gap-1"
+                          onClick={() => handleVerify(emp._id, emp.isVerified)}
+                        >
+                          {emp.isVerified ? (
+                            <>
+                              <FaTimes /> Unverify
+                            </>
+                          ) : (
+                            <>
+                              <FaCheck /> Verify
+                            </>
+                          )}
+                        </button>
+                      </>
+                    )}
+                    <NavLink
+                      to={`/dashboard/employee-details/${emp._id}`}
+                      className="btn btn-sm btn-outline flex items-center gap-1"
+                    >
+                      <FaInfoCircle /> Details
+                    </NavLink>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {employees.map((emp) => (
+            <div
+              key={emp._id}
+              className="border rounded-lg shadow-md p-4 space-y-2"
+            >
+              <h3 className="text-lg font-semibold">{emp.name}</h3>
+              <p className="text-sm">{emp.email}</p>
+              <p className="text-sm text-gray-500">
+                Acct: {emp.bank_account_no || "N/A"}
+              </p>
+              <p>{emp.designation}</p>
+              <p>💰 ${emp.salary}</p>
+              <p>
+                {emp.isVerified ? (
+                  <span className="text-green-600">✅ Verified</span>
+                ) : (
+                  <span className="text-red-500">❌ Unverified</span>
+                )}
+              </p>
+              <div className="flex flex-wrap gap-2 mt-2">
+                {roleData === "HR" && (
+                  <>
+                    <button
+                      className={`btn btn-sm ${
+                        emp.isVerified
+                          ? "btn-primary"
+                          : "btn-disabled bg-gray-300 text-gray-500"
+                      }`}
+                      disabled={!emp.isVerified}
+                      onClick={() => {
+                        setMonth("");
+                        setYear("");
+                        setSelectedEmployee(emp);
+                      }}
+                    >
+                      <FaMoneyCheckAlt /> Pay
+                    </button>
+                    <button
+                      className="btn btn-sm btn-secondary"
+                      onClick={() => handleVerify(emp._id, emp.isVerified)}
+                    >
+                      {emp.isVerified ? <FaTimes /> : <FaCheck />}
+                    </button>
+                  </>
+                )}
+                <NavLink
+                  to={`/dashboard/employee-details/${emp._id}`}
+                  className="btn btn-sm btn-outline"
+                >
+                  <FaInfoCircle />
+                </NavLink>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
 
-      {/* ✅ Modal */}
       {selectedEmployee && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-lg w-[90%] max-w-md">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 px-4">
+          <div className="bg-white p-6 rounded-lg w-full max-w-md">
             <h3 className="text-lg font-semibold mb-4">
               Pay Salary to {selectedEmployee.name}
             </h3>
-            <div className="mb-2">
-              <label className="block font-medium">Salary</label>
-              <input
-                type="number"
-                value={selectedEmployee.salary}
-                readOnly
-                className="input input-bordered w-full"
-              />
-            </div>
-            <div className="mb-2">
-              <label className="block font-medium">Month</label>
-              <select
-                value={month}
-                onChange={(e) => setMonth(e.target.value)}
-                className="select select-bordered w-full"
-              >
-                <option value="">Select Month</option>
-                {months.map((m) => (
-                  <option key={m} value={m}>
-                    {m}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="mb-2">
-              <label className="block font-medium">Year</label>
-              <select
-                value={year}
-                onChange={(e) => setYear(e.target.value)}
-                className="select select-bordered w-full"
-              >
-                <option value="">Select Year</option>
-                {years.map((y) => (
-                  <option key={y} value={y}>
-                    {y}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <input
+              readOnly
+              value={selectedEmployee.salary}
+              className="input input-bordered w-full mb-3"
+            />
+            <select
+              value={month}
+              onChange={(e) => setMonth(e.target.value)}
+              className="select select-bordered w-full mb-3"
+            >
+              <option value="">Select Month</option>
+              {months.map((m) => (
+                <option key={m} value={m}>
+                  {m}
+                </option>
+              ))}
+            </select>
+            <select
+              value={year}
+              onChange={(e) => setYear(e.target.value)}
+              className="select select-bordered w-full mb-3"
+            >
+              <option value="">Select Year</option>
+              {years.map((y) => (
+                <option key={y} value={y}>
+                  {y}
+                </option>
+              ))}
+            </select>
 
             {month && year && isDuplicateRequest() && (
-              <p className="text-red-500 text-sm mt-2 mb-2">
-                ❌ You already paid for this month and year!
+              <p className="text-red-500 text-sm mb-2">
+                ❌ Already paid for this month and year!
               </p>
             )}
 

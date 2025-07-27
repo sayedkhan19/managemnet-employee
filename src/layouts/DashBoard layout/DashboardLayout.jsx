@@ -18,7 +18,7 @@ import {
 const DashboardLayout = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { role, roleLoading } = useUserRole();
-  console.log(role)
+  // console.log(role)
 
   return (
     <div className="flex h-screen overflow-hidden">
