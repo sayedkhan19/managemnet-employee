@@ -25,6 +25,8 @@ import Progress from "../layouts/DashBoard layout/hr/Progress";
 import AdminManager from "../layouts/DashBoard layout/admin/AdminManager";
 import Forbidden from "../Pageses/Forbidden/Forbidden";
 import AdminRoute from "../PrivateRoute/AdminRoute";
+import EmpoleeRoute from "../PrivateRoute/EmpoleeRoute";
+import HRRoute from "../PrivateRoute/HRRoute";
 
 export const router = createBrowserRouter([
   {
@@ -77,7 +79,9 @@ export const router = createBrowserRouter([
       },
       {
         path: "work",
-        element: <WorkSheet></WorkSheet>
+        element: <EmpoleeRoute>
+          <WorkSheet></WorkSheet>
+        </EmpoleeRoute>,
       },
       {
         path:"profile",
@@ -85,7 +89,9 @@ export const router = createBrowserRouter([
       },
       {
         path: "employee",
-        element: <EmployeeAll></EmployeeAll>
+        element: <HRRoute>
+        <EmployeeAll></EmployeeAll>
+        </HRRoute>,
       },
       {
         path: 'payment',
@@ -110,7 +116,9 @@ export const router = createBrowserRouter([
       },
       {
         path : "my-payments",
-        element: <MyPaymentHistory></MyPaymentHistory>,
+        element: <EmpoleeRoute>
+          <MyPaymentHistory></MyPaymentHistory>
+        </EmpoleeRoute>,
       },
       {
         path: "verified-hrs",
@@ -120,7 +128,8 @@ export const router = createBrowserRouter([
       },
       {
         path: 'progress',
-        element: <Progress></Progress>
+        element: <HRRoute>
+        <Progress></Progress></HRRoute>,
       },
       {
         path: "AdminManager",

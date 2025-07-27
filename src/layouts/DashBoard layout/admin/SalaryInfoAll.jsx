@@ -25,7 +25,7 @@ const SalaryInfoAll = () => {
         <thead className="bg-gray-100">
           <tr>
             <th className="px-4 py-2 text-left">#</th>
-            <th className="px-4 py-2 text-left">User Email</th>
+            <th className="px-4 py-2 text-left">Admin Email</th>
             <th className="px-4 py-2 text-left">Amount ($)</th>
             <th className="px-4 py-2 text-left">Method</th>
             <th className="px-4 py-2 text-left">Transaction ID</th>
@@ -33,7 +33,7 @@ const SalaryInfoAll = () => {
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200">
-          {paymentHistory.map((payment, index) => (
+          {paymentHistory &&  paymentHistory?.map((payment, index) => (
             <tr key={payment._id} className="hover:bg-gray-50">
               <td className="px-4 py-2">{index + 1}</td>
               <td className="px-4 py-2">{payment.email}</td>

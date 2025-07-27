@@ -151,9 +151,12 @@ const WorkSheet = () => {
           />
         </div>
 
-        <button type="submit" className="btn btn-primary w-full md:w-auto">
-          {editingData ? "Update" : "Add"}
-        </button>
+        <div className="self-end w-full md:w-auto">
+  <button type="submit" className="btn btn-primary w-full md:w-auto">
+    {editingData ? "Update" : "Add"}
+  </button>
+</div>
+
       </form>
 
       {/* Data Table */}

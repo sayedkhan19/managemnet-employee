@@ -1,6 +1,8 @@
 import { Link } from "react-router";
+import useAuth from "../../hooks/useAuth";
 
 const Footer = () => {
+  const {user} = useAuth();
   return (
     <footer className="bg-neutral text-neutral-content">
       <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -19,8 +21,15 @@ const Footer = () => {
           <h3 className="text-xl font-semibold mb-3">Quick Links</h3>
           <ul className="space-y-2">
             <li><Link className="hover:underline" to="/">Home</Link></li>
-            <li><Link className="hover:underline" to="/login">Login</Link></li>
+            
+            
+            {
+              !user && <>
+              <li><Link className="hover:underline" to="/login">Login</Link></li>
             <li><Link className="hover:underline" to="/register">Register</Link></li>
+              </>
+            }
+            
             <li><Link className="hover:underline" to="/dashboard">Dashboard</Link></li>
             <li><Link className="hover:underline" to="/contact-us">Contact Us</Link></li>
           </ul>
