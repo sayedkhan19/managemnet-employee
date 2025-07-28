@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, Outlet } from "react-router";
+import { NavLink, Outlet } from "react-router";
 import { Menu } from "lucide-react";
 import useUserRole from "../../hooks/useUserRole";
 import {
@@ -12,13 +12,17 @@ import {
   FaClipboardCheck,
   FaUserShield,
   FaCoins,
-} from 'react-icons/fa';
-
+  FaEnvelope,
+  } from "react-icons/fa";
 
 const DashboardLayout = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { role, roleLoading } = useUserRole();
-  // console.log(role)
+
+  const linkClass = ({ isActive }) =>
+    `flex items-center gap-2 px-4 py-2 rounded font-medium ${
+      isActive ? "bg-blue-200 text-blue-900 font-semibold" : "hover:bg-blue-100 text-gray-700"
+    }`;
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -41,113 +45,63 @@ const DashboardLayout = () => {
           <h2 className="text-xl font-bold text-blue-600">Dashboard</h2>
         </div>
         <nav className="flex flex-col p-4 space-y-2">
-          
-          <Link
-  to="/"
-  className="flex items-center gap-2 px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
-  onClick={() => setDrawerOpen(false)}
->
-  <FaHome /> HOME
-</Link>
+          <NavLink to="/" className={linkClass} onClick={() => setDrawerOpen(false)}>
+            <FaHome /> HOME
+          </NavLink>
 
-<Link
-  to="/dashboard/profile"
-  className="flex items-center gap-2 px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
-  onClick={() => setDrawerOpen(false)}
->
-  <FaUserCircle /> MY PROFILE
-</Link>
+          <NavLink to="/dashboard/profile" className={linkClass} onClick={() => setDrawerOpen(false)}>
+            <FaUserCircle /> MY PROFILE
+          </NavLink>
 
-{ 
+          {!roleLoading && role === "Employee" && (
+            <>
+              <NavLink to="/dashboard/work" className={linkClass} onClick={() => setDrawerOpen(false)}>
+                <FaTasks /> WORK SHEET
+              </NavLink>
 
-!roleLoading && role === "Employee" && 
-  <>
-  <Link
-  to="/dashboard/work"
-  className="flex items-center gap-2 px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
-  onClick={() => setDrawerOpen(false)}
->
-  <FaTasks /> WORK SHEET
-</Link>
+              <NavLink to="/dashboard/my-payments" className={linkClass} onClick={() => setDrawerOpen(false)}>
+                <FaMoneyBillWave /> MY PAYMENTS HISTORY
+              </NavLink>
+            </>
+          )}
 
+          {!roleLoading && role === "HR" && (
+            <>
+              <NavLink to="/dashboard/employee" className={linkClass} onClick={() => setDrawerOpen(false)}>
+                <FaUsers /> ALL EMPLOYEE
+              </NavLink>
 
+              <NavLink to="/dashboard/progress" className={linkClass} onClick={() => setDrawerOpen(false)}>
+                <FaRegChartBar /> PROGRESS
+              </NavLink>
+            </>
+          )}
 
-<Link
-  to="/dashboard/my-payments"
-  className="flex items-center gap-2 px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
-  onClick={() => setDrawerOpen(false)}
->
-  <FaMoneyBillWave /> MY PAYMENTS HISTORY
-</Link>
-  </>
-}
+          {!roleLoading && role === "Admin" && (
+            <>
+              <NavLink to="/dashboard/payment" className={linkClass} onClick={() => setDrawerOpen(false)}>
+                <FaClipboardCheck /> PAYMENTS PENDING
+              </NavLink>
 
-{
-!roleLoading && role === "HR" && (
-  <>
-    <Link
-      to="/dashboard/employee"
-      className="flex items-center gap-2 px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
-      onClick={() => setDrawerOpen(false)}
-    >
-      <FaUsers /> ALL EMPLOYEE
-    </Link>
+              <NavLink to="/dashboard/verified-hrs" className={linkClass} onClick={() => setDrawerOpen(false)}>
+                <FaUsers /> HR & EMPLOYEE
+              </NavLink>
 
-    <Link
-      to="/dashboard/progress"
-      className="flex items-center gap-2 px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
-      onClick={() => setDrawerOpen(false)}
-    >
-      <FaRegChartBar /> PROGRESS
-    </Link>
-  </>
-)}
+              <NavLink to="/dashboard/AdminManager" className={linkClass} onClick={() => setDrawerOpen(false)}>
+                <FaUserShield /> ADMIN MANAGER
+              </NavLink>
 
-{
-!roleLoading && role === "Admin" && (
-  <>
-    <Link
-      to="/dashboard/payment"
-      className="flex items-center gap-2 px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
-      onClick={() => setDrawerOpen(false)}
-    >
-      <FaClipboardCheck /> PAYMENTS PENDING
-    </Link>
-
-    <Link
-      to="/dashboard/verified-hrs"
-      className="flex items-center gap-2 px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
-      onClick={() => setDrawerOpen(false)}
-    >
-      <FaUsers /> HR & EMPLOYEE
-    </Link>
-
-    <Link
-      to="/dashboard/AdminManager"
-      className="flex items-center gap-2 px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
-      onClick={() => setDrawerOpen(false)}
-    >
-      <FaUserShield /> ADMIN MANAGER
-    </Link>
-
-    <Link
-      to="/dashboard/salary"
-      className="flex items-center gap-2 px-4 py-2 rounded hover:bg-blue-100 text-gray-700 font-medium"
-      onClick={() => setDrawerOpen(false)}
-    >
-      <FaCoins /> SALARY INFO
-    </Link>
-  </>
-)}
-
-       
-       
+              <NavLink to="/dashboard/salary" className={linkClass} onClick={() => setDrawerOpen(false)}>
+                <FaCoins /> SALARY INFO
+              </NavLink>
+             
+              <NavLink to="/dashboard/message" className={linkClass} onClick={() => setDrawerOpen(false)}>
+                <FaEnvelope className="inline-block mr-2" /> All Message
+              </NavLink>
+            </>
+          )}
         </nav>
       </div>
-
-      
-      
-
 
       {/* Overlay for Mobile */}
       {drawerOpen && (

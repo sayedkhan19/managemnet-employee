@@ -27,6 +27,7 @@ import Forbidden from "../Pageses/Forbidden/Forbidden";
 import AdminRoute from "../PrivateRoute/AdminRoute";
 import EmpoleeRoute from "../PrivateRoute/EmpoleeRoute";
 import HRRoute from "../PrivateRoute/HRRoute";
+import ContactMessages from "../layouts/DashBoard layout/admin/ContactMessages";
 
 export const router = createBrowserRouter([
   {
@@ -136,6 +137,14 @@ export const router = createBrowserRouter([
         element: <AdminRoute>
           <AdminManager></AdminManager>
         </AdminRoute>,
+        
+      },
+      {
+        path:"message",
+        element: 
+        <AdminRoute>
+        <ContactMessages></ContactMessages>
+        </AdminRoute>
       }
     ]
   },

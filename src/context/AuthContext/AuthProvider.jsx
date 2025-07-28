@@ -62,7 +62,7 @@ const AuthProvider = ({ children}) => {
       }
     } catch (err) {
       console.error("❌ Failed to fetch user:", err);
-      toast.error("Error checking user status. Allowing login temporarily.");
+    //   toast.error("Error checking user status. Allowing login temporarily.");
       setUser(currentUser);
     } finally {
       setLoading(false);

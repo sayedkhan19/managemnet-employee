@@ -16,12 +16,15 @@ const NavBar = () => {
       console.error('Logout failed', error);
     }
   };
-
+const linkClass = ({ isActive }) =>
+    `flex items-center gap-2 px-4 py-2 rounded font-medium ${
+      isActive ? "bg-blue-200 text-blue-900 font-semibold" : "hover:bg-blue-100 text-gray-700"
+    }`;
   const NavItems = (
     <>
-      <li><NavLink to="/">Home</NavLink></li>
-      <li><NavLink to="/about">About Us</NavLink></li>
-      <li><NavLink to="/contact">Contact Us</NavLink></li>
+      <li><NavLink className={linkClass} to="/">Home</NavLink></li>
+      <li><NavLink className={linkClass} to="/about">About Us</NavLink></li>
+      <li><NavLink className={linkClass} to="/contact">Contact Us</NavLink></li>
 
       {
         user && 
@@ -51,7 +54,7 @@ const NavBar = () => {
             {NavItems}
           </ul>
         </div>
-        <NavLink to="/" className="btn btn-ghost text-xl hidden lg:block">ManageEM</NavLink>
+        <NavLink to="/" className="btn btn-ghost text-xl hidden lg:block">📋 ManageEM</NavLink>
       </div>
 
       {/* Center - Main Menu */}

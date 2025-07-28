@@ -115,12 +115,14 @@ const VerifiedHRList = () => {
               </tr>
             </thead>
             <tbody>
-              {users.map((user, index) => (
+              {[...users].reverse().map((user, index) => (
+
                 <tr
                   key={user.email}
                   className={user.ifFired ? "bg-red-100" : "bg-green-50"}
                 >
-                  <td>{index + 1}</td>
+                  <td>{users?.length - index}</td>
+
                   <td>
                     {user.photoURL ? (
                       <img
@@ -168,7 +170,8 @@ const VerifiedHRList = () => {
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {users.map((user) => (
+          {[...users].reverse().map((user) => (
+
             <div
               key={user.email}
               className={`p-4 rounded-lg shadow border flex flex-col justify-between h-full ${
