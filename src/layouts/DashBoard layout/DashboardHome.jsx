@@ -5,7 +5,7 @@ const DashboardHome = () => {
   const { role, roleLoading } = useUserRole();
 
   if (roleLoading) {
-    return <div className="text-center text-lg font-semibold mt-10">Loading dashboard...</div>;
+    return <span className="loading loading-bars loading-xl"></span>;
   }
 
   if (role === "Employee") {

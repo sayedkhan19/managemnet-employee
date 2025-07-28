@@ -5,15 +5,16 @@ import Footer from '../SharedPage/Footer';
 const ContactUs = () => {
     return (
         <div>
-            <div>
-                <NavBar></NavBar>
-            </div>
-           
-            <div>Hello we will contact</div>
+            <NavBar></NavBar>
 
-            <div>
+            
+            
+            <div></div>
+            
+            
+            
             <Footer></Footer>
-            </div>
+            
         </div>
     );
 };
