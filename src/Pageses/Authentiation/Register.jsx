@@ -19,50 +19,45 @@ const Register = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
-    createUser(data.email, data.password)
-      .then(async(result) => {
-        console.log(result.user);
-        navigate(from);
+const onSubmit = async (data) => {
+  if (!profilePic) {
+    toast.error("Please wait for the image to upload or upload again");
+    return;
+  }
 
-        //update user info in the database
-        const userInfo = {
-          name: data.name,
-          email: data.email,
-          role: data.role,
-          bank_account_no: data.bank_account_no,
-          designation: data.designation,
-          salary: parseFloat(data.salary),
-          photoURL: profilePic,
-          createdAt: new Date().toISOString(),
-          last_login: new Date().toISOString(),
-          isVerified: false,
-          ifFired: false,
-        };
+  try {
+    const result = await createUser(data.email, data.password);
 
-        const userRes = await axiosInstance.post("/users", userInfo);
-        console.log(userRes.data);
+    const userInfo = {
+      name: data.name,
+      email: data.email,
+      role: data.role,
+      bank_account_no: data.bank_account_no,
+      designation: data.designation,
+      salary: parseFloat(data.salary),
+      photoURL: profilePic,
+      createdAt: new Date().toISOString(),
+      last_login: new Date().toISOString(),
+      isVerified: false,
+      ifFired: false,
+    };
 
-        //update user profile in firebase
-        const userProfile = {
-              displayName : data.name,
-              photoURL : profilePic
-        }
-        updateUserProfile(userProfile)
-        .then(() =>{
-          console.log("Profile Pic updated")
-        })
-        .catch(error=>{
-          console.log(error);
-        })
+    await axiosInstance.post("/users", userInfo);
+
+    await updateUserProfile({
+      displayName: data.name,
+      photoURL: profilePic,
+    });
+
+    toast.success("Registration complete!");
+    navigate(from); // ✅ Move here
+  } catch (error) {
+    console.error("Register error:", error);
+    toast.error("Something went wrong");
+  }
+};
 
 
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
 
  const handleGoogleSignIn = () => {
   signInWithGoogle()
@@ -105,18 +100,32 @@ const Register = () => {
 
 
   //img upload
-  const handleImgUpload = async(e) =>{
-    const image = e.target.files[0];
-    // console.log(image);
-   
-    const formData = new FormData();
-    formData.append("image", image)
-    
-    const imageUploadUrl = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMAGE_UPLOAD_KEY}`;
-    
+ const handleImgUpload = async (e) => {
+  const image = e.target.files[0];
+  if (!image) return toast.error("No image selected");
+
+  const formData = new FormData();
+  formData.append("image", image);
+
+  const imageUploadUrl = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMAGE_UPLOAD_KEY}`;
+
+  try {
+    toast.loading("Uploading image...", { id: "imgUpload" });
     const res = await axios.post(imageUploadUrl, formData);
-    setProfilePic(res.data?.data?.url);
+
+    if (res.data && res.data.success) {
+      const imageUrl = res.data.data.url;
+      setProfilePic(imageUrl);
+      toast.success("Image uploaded successfully", { id: "imgUpload" });
+    } else {
+      throw new Error("Image upload failed");
+    }
+  } catch (error) {
+    toast.error("Image upload failed", { id: "imgUpload" });
+    console.error("Image upload error:", error);
   }
+};
+
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8">
