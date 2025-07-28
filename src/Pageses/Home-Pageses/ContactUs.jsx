@@ -48,14 +48,12 @@ const ContactUs = () => {
         {/* Address Section */}
         <div className="bg-gray-50 rounded-xl p-3 sm:p-6 shadow-sm text-xs sm:text-base break-words min-w-0">
           <h3 className="text-base sm:text-xl font-semibold text-blue-600 mb-2 sm:mb-3">Our Address</h3>
-          <p className="text-gray-800">Employee Flow HQ</p>
-          <p className="text-gray-800">123 Business Avenue</p>
+          <p className="text-gray-800">📋 ManageEm</p>
+          <p className="text-gray-800">Dhanmondi 32</p>
           <p className="text-gray-800">Level 4, Dhaka 1207, Bangladesh</p>
           <p className="text-gray-800 mt-2">
-            Email:{' '}
-            <a href="mailto:contact@employeeflow.com" className="text-blue-500 underline break-all">
-              contact@employeeflow.com
-            </a>
+            Email:contact@manageem.com
+            
           </p>
         </div>
 
