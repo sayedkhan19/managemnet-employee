@@ -37,7 +37,7 @@ const AuthProvider = ({ children}) => {
 
 
     // 🔐 Fired user check logic
- useEffect(() => {
+useEffect(() => {
   const unSubscribe = onAuthStateChanged(auth, async (currentUser) => {
     if (!currentUser?.email) {
       setUser(null);
@@ -46,23 +46,30 @@ const AuthProvider = ({ children}) => {
     }
 
     try {
-      const res = await axios.get(`http://localhost:5000/users/email/${currentUser.email}`);
-      const dbUser = res.data;
+      const token = await currentUser.getIdToken();
 
-      console.log("✅ MongoDB user:", dbUser);
+      const res = await axios.get(
+        `https://management-server-zeta.vercel.app/users/email/${currentUser.email}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const dbUser = res.data;
 
       const isFired = dbUser?.ifFired === true || dbUser?.ifFired === 'true';
 
       if (isFired) {
-        toast.error("🚫 You are fired and cannot log in.");
+        toast.error('🚫 You are fired and cannot log in.');
         await signOut(auth);
         setUser(null);
       } else {
         setUser(currentUser);
       }
     } catch (err) {
-      console.error("❌ Failed to fetch user:", err);
-    //   toast.error("Error checking user status. Allowing login temporarily.");
+      console.error('❌ Failed to fetch user:', err);
       setUser(currentUser);
     } finally {
       setLoading(false);
@@ -71,6 +78,7 @@ const AuthProvider = ({ children}) => {
 
   return () => unSubscribe();
 }, []);
+
 
 
     const authInfo = {

@@ -14,7 +14,7 @@ const PayModal = ({ employee, closeModal }) => {
     };
 
     try {
-      const res = await axios.post("http://localhost:5000/salary-requests", paymentData);
+      const res = await axios.post("https://management-server-zeta.vercel.app/salary-requests", paymentData);
       if (res.data.insertedId || res.data.acknowledged) {
         toast.success("Salary payment request submitted");
         closeModal();

@@ -10,7 +10,7 @@ const Profile = () => {
     enabled: !!user?.email,
     queryKey: ["userInfo", user?.email],
     queryFn: async () => {
-      const res = await axiosSecure.get(`http://localhost:5000/users/${user.email}`);
+      const res = await axiosSecure.get(`https://management-server-zeta.vercel.app/users/${user.email}`);
       
       return res.data;
     },
