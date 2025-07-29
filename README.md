@@ -4,6 +4,10 @@ that mean meanagement employee
 
 Live Link : https://managementem-ec6f9.web.app
 
+Admin
+email: vuzeg@mailinator.com
+pass: vuzeg@mailinator.comA
+
 📦 Uses
 react
 react-router
