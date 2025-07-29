@@ -1,7 +1,10 @@
 
+web side name: ManageEM
+that mean meanagement employee
+
 Live Link : https://managementem-ec6f9.web.app
 
-📦 Use ui 
+📦 Uses
 react
 react-router
 react-hook-form
