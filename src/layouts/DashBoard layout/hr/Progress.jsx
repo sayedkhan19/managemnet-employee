@@ -50,14 +50,15 @@ const Progress = () => {
   }
 
   if (isLoading) {
-    return <p className="text-center mt-10">Loading...</p>;
+    return <span className="loading loading-bars loading-xl"></span>;
   }
 
   const employeeOptions = allUsers.filter((user) => user.role === 'Employee');
 
   return (
-    <div className="p-4 max-w-7xl mx-auto">
-      <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-4">
+    <div className="p-4 max-w-5xl mx-auto">
+      {/* Filter Section */}
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-6 mt-4">
         {/* Dropdown for selecting employee */}
         <select
           value={selectedEmail}
@@ -92,37 +93,38 @@ const Progress = () => {
         </button>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="table table-zebra w-full">
-          <thead>
-            <tr className="bg-gray-100">
-              <th>#</th>
-              <th>Task</th>
-              <th>Hours</th>
-              <th>Email</th>
-              <th>Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {worksheets.length === 0 ? (
-              <tr>
-                <td colSpan="5" className="text-center text-red-500 font-semibold">
-                  No data found.
-                </td>
-              </tr>
-            ) : (
-              worksheets.map((item, idx) => (
-                <tr key={item._id}>
-                  <td>{idx + 1}</td>
-                  <td>{item.task}</td>
-                  <td>{item.hours}</td>
-                  <td>{item.email}</td>
-                  <td>{item.date}</td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+      {/* One-column card system instead of table */}
+      <div className="space-y-4">
+        {worksheets.length === 0 ? (
+          <p className="text-center text-red-500 font-semibold">
+            No data found.
+          </p>
+        ) : (
+          worksheets.map((item, idx) => (
+            <div
+              key={item._id}
+              className="p-4 rounded-lg shadow-md border bg-white hover:shadow-lg transition"
+            >
+              <div className="flex justify-between items-center mb-2">
+                <h3 className="text-lg font-semibold text-blue-600">
+                  {item.task}
+                </h3>
+                <span className="text-sm text-gray-500">
+                  #{idx + 1}
+                </span>
+              </div>
+              <p className="text-gray-700">
+                <span className="font-medium">Hours:</span> {item.hours}
+              </p>
+              <p className="text-gray-700">
+                <span className="font-medium">Email:</span> {item.email}
+              </p>
+              <p className="text-gray-700">
+                <span className="font-medium">Date:</span> {item.date}
+              </p>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

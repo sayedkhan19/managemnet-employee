@@ -37,7 +37,7 @@ const MyPaymentHistory = () => {
     return data.slice(start, start + ITEMS_PER_PAGE);
   };
 
-  if (isLoading) return <div className="text-center py-10">Loading...</div>;
+  if (isLoading) return <span className="loading loading-bars loading-xl"></span>;
 
   return (
     <div className="p-4 space-y-10">

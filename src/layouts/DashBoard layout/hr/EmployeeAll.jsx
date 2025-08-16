@@ -17,15 +17,15 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 const EmployeeAll = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-  const [viewMode, setViewMode] = useState("table");
+  const [viewMode, setViewMode] = useState("list"); // default list (instead of table)
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
 
   const currentYear = new Date().getFullYear();
   const months = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
+    "January","February","March","April","May","June",
+    "July","August","September","October","November","December"
   ];
   const years = [currentYear - 1, currentYear, currentYear + 1];
 
@@ -106,7 +106,7 @@ const EmployeeAll = () => {
     }
   };
 
-  if (isLoading || roleLoading) return <div className="p-4">Loading...</div>;
+  if (isLoading || roleLoading) return <span className="loading loading-bars loading-xl"></span>;
 
   return (
     <div className="p-4">
@@ -115,117 +115,91 @@ const EmployeeAll = () => {
         <button
           className="btn btn-sm flex items-center gap-1"
           onClick={() =>
-            setViewMode((prev) => (prev === "table" ? "card" : "table"))
+            setViewMode((prev) => (prev === "list" ? "card" : "list"))
           }
         >
-          {viewMode === "table" ? <FaThLarge /> : <FaThList />}
-          {viewMode === "table" ? "Card View" : "Table View"}
+          {viewMode === "list" ? <FaThLarge /> : <FaThList />}
+          {viewMode === "list" ? "Card View" : "List View"}
         </button>
       </div>
 
-      {viewMode === "table" ? (
-        <div className="overflow-x-auto">
-          <table className="table w-full border rounded-lg">
-            <thead className="bg-gray-100">
-              <tr>
-                <th>Name</th>
-                <th>Email & Account</th>
-                <th>Designation</th>
-                <th>Salary</th>
-                <th>Status</th>
-                <th>Payment</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {employees.map((emp) => (
-                <tr key={emp._id}>
-                  <td>{emp.name}</td>
-                  <td className="break-words max-w-xs">
-                    <p>{emp.email}</p>
-                    <p className="text-sm text-gray-500">
-                      Acct: {emp.bank_account_no || "N/A"}
-                    </p>
-                  </td>
-                  <td>{emp.designation}</td>
-                  <td>${emp.salary}</td>
-                  <td>
-                    {emp.isVerified ? (
-                      <span className="text-green-600 font-medium">
-                        ✅ Verified
-                      </span>
-                    ) : (
-                      <div>
-                        <span className="text-red-500 font-medium">
-                          ❌ Unverified
-                        </span>
-                        <p className="text-xs text-gray-400">
-                          Verify to enable payment
-                        </p>
-                      </div>
-                    )}
-                  </td>
-                  <td>
-                    {emp.paymentStatus === "pending" ? (
-                      <span className="text-yellow-600 font-medium">
-                        Pending
-                      </span>
-                    ) : (
-                      <span className="text-gray-400">—</span>
-                    )}
-                  </td>
-                  <td className="flex flex-wrap gap-2">
-                    {roleData === "HR" && (
-                      <>
-                        <button
-                          className={`btn btn-sm flex items-center gap-1 ${
-                            emp.isVerified
-                              ? "btn-primary"
-                              : "btn-disabled bg-gray-300 text-gray-500"
-                          }`}
-                          onClick={() => {
-                            setMonth("");
-                            setYear("");
-                            setSelectedEmployee(emp);
-                          }}
-                          disabled={!emp.isVerified}
-                        >
-                          <FaMoneyCheckAlt /> Pay
-                        </button>
-                        <button
-                          className="btn btn-sm btn-secondary flex items-center gap-1"
-                          onClick={() => handleVerify(emp._id, emp.isVerified)}
-                        >
-                          {emp.isVerified ? (
-                            <>
-                              <FaTimes /> Unverify
-                            </>
-                          ) : (
-                            <>
-                              <FaCheck /> Verify
-                            </>
-                          )}
-                        </button>
-                      </>
-                    )}
-                    <NavLink
-                      to={`/dashboard/employee-details/${emp._id}`}
-                      className="btn btn-sm btn-outline flex items-center gap-1"
+      {/* LIST VIEW (1-column card style) */}
+      {viewMode === "list" && (
+        <div className="space-y-4">
+          {employees.map((emp) => (
+            <div
+              key={emp._id}
+              className="border rounded-lg shadow-sm p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 bg-white"
+            >
+              <div>
+                <h3 className="text-lg font-semibold">{emp.name}</h3>
+                <p className="text-sm">{emp.email}</p>
+                <p className="text-sm text-gray-500">
+                  Acct: {emp.bank_account_no || "N/A"}
+                </p>
+                <p className="text-sm">{emp.designation}</p>
+                <p className="text-sm font-medium">💰 ${emp.salary}</p>
+                <p>
+                  {emp.isVerified ? (
+                    <span className="text-green-600">✅ Verified</span>
+                  ) : (
+                    <span className="text-red-500">❌ Unverified</span>
+                  )}
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {roleData === "HR" && (
+                  <>
+                    <button
+                      className={`btn btn-sm ${
+                        emp.isVerified
+                          ? "btn-primary"
+                          : "btn-disabled bg-gray-300 text-gray-500"
+                      }`}
+                      disabled={!emp.isVerified}
+                      onClick={() => {
+                        setMonth("");
+                        setYear("");
+                        setSelectedEmployee(emp);
+                      }}
                     >
-                      <FaInfoCircle /> Details
-                    </NavLink>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                      <FaMoneyCheckAlt /> Pay
+                    </button>
+                    <button
+                      className="btn btn-sm btn-secondary"
+                      onClick={() => handleVerify(emp._id, emp.isVerified)}
+                    >
+                      {emp.isVerified ? (
+                        <>
+                          <FaTimes /> Unverify
+                        </>
+                      ) : (
+                        <>
+                          <FaCheck /> Verify
+                        </>
+                      )}
+                    </button>
+                  </>
+                )}
+                <NavLink
+                  to={`/dashboard/employee-details/${emp._id}`}
+                  className="btn btn-sm btn-outline"
+                >
+                  <FaInfoCircle /> Details
+                </NavLink>
+              </div>
+            </div>
+          ))}
         </div>
-      ) : (
+      )}
+
+      {/* CARD VIEW (grid cards) */}
+      {viewMode === "card" && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {employees.map((emp) => (
             <div
               key={emp._id}
-              className="border rounded-lg shadow-md p-4 space-y-2"
+              className="border rounded-lg shadow-md p-4 space-y-2 bg-white"
             >
               <h3 className="text-lg font-semibold">{emp.name}</h3>
               <p className="text-sm">{emp.email}</p>
@@ -279,6 +253,7 @@ const EmployeeAll = () => {
         </div>
       )}
 
+      {/* PAYMENT MODAL */}
       {selectedEmployee && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 px-4">
           <div className="bg-white p-6 rounded-lg w-full max-w-md">

@@ -63,7 +63,7 @@ const EmployeeDetails = () => {
     }));
   }, [salaryHistoryRaw]);
 
-  if (empLoading || historyLoading) return <div className="p-4">Loading...</div>;
+  if (empLoading || historyLoading) return <span className="loading loading-bars loading-xl"></span>;
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8 space-y-8">
