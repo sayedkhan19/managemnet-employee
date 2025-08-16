@@ -39,8 +39,8 @@ const Footer = () => {
         <div>
           <h3 className="text-xl font-semibold mb-3">Contact</h3>
           <p>📍 Dhaka, Bangladesh</p>
-          <p>📧 support@parcelxpress.com</p>
-          <p>📞 +880 123 456 789</p>
+          <p>📧 sayedkhansayed196@gmail.com</p>
+          <p>📞 +8801799886487</p>
         </div>
       </div>
 

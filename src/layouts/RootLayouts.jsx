@@ -5,7 +5,7 @@ import Footer from '../Pageses/SharedPage/Footer';
 
 const RootLayouts = () => {
     return (
-        <div className='px-8 max-w-[1500px] mx-auto'>
+        <div className='max-w-[1500px] mx-auto bg-[#FFFFFF]'>
             
             <div className="navbar max-w-[1500px] mx-auto 
             bg-base-100 shadow-sm fixed top-0 left-0 right-0 z-50">
@@ -17,7 +17,7 @@ const RootLayouts = () => {
          <Outlet></Outlet>
     </div>
 
-<div>
+<div className='w-full'>
     <Footer></Footer>
 </div>
 

@@ -10,7 +10,7 @@ const MyPaymentHistory = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
 
-  const [viewMode, setViewMode] = useState('table'); // 'table' or 'card'
+  const [viewMode, setViewMode] = useState('table');
   const [currentPendingPage, setCurrentPendingPage] = useState(1);
   const [currentPaidPage, setCurrentPaidPage] = useState(1);
 

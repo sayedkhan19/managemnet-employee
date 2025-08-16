@@ -29,6 +29,7 @@ const linkClass = ({ isActive }) =>
       {
         user && 
         <>
+        
          <li><NavLink to="/dashboard">Dashboard</NavLink></li>
         </>
       }

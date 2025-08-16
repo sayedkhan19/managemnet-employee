@@ -26,7 +26,7 @@ const features = [
 
 const FeatureHighlights = () => {
   return (
-    <section className="py-12 md:py-16 bg-gray-50 w-full mx-auto">
+    <section className="py-12 md:py-16 bg-gray-50 w-full mx-auto px-2.5">
       <div className="w-full mx-auto px-2 sm:px-6 text-center">
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-blue-800">
           Why Choose Our System?

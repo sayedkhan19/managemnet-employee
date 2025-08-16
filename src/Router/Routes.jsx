@@ -51,6 +51,7 @@ export const router = createBrowserRouter([
           path: "/forbidden",
           Component: Forbidden,
         },
+      
     ]
   },
   
