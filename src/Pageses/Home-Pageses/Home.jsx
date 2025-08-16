@@ -8,20 +8,24 @@ import TestimonialsSection from './TestimonialsSection';
 import StatsSection from './StatsSection';
 import ImageSlider from './ImageSlider';
 import FeatureHighlights from './FeatureHighlights';
+import KeyMetricsSection from './KeyMetricsSection';
+import WorkflowSection from './WorkflowSection';
+import CallToActionSection from './CallToActionSection';
 
 const Home = () => {
     return (
         <div>
-            <NavBar></NavBar>
            
             <HeroSection></HeroSection>
             {/* <ImageSlider></ImageSlider> */}
             <ServicesSection></ServicesSection>
             <TestimonialsSection></TestimonialsSection>
             <FeatureHighlights></FeatureHighlights>
-            <StatsSection></StatsSection>
+            {/* <StatsSection></StatsSection> */}
+            <KeyMetricsSection></KeyMetricsSection>
+            <WorkflowSection></WorkflowSection>
+            <CallToActionSection></CallToActionSection>
             
-            <Footer></Footer>
        
         </div>
     );

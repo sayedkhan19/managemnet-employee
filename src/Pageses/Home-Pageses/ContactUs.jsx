@@ -31,11 +31,7 @@ const ContactUs = () => {
 
   return (
     <>
-    <div>
-        <NavBar></NavBar>
-    </div>
-
-    <div>
+<div>
 <div className="max-w-[100vw] w-full px-2 sm:px-4 py-10 sm:py-16 overflow-hidden">
       <h2 className="text-2xl sm:text-4xl font-bold text-center text-blue-500 mb-2 break-words">
         Contact Us
@@ -93,10 +89,6 @@ const ContactUs = () => {
         </form>
       </div>
     </div>
-    </div>
-
-    <div>
-        <Footer></Footer>
     </div>
     
     

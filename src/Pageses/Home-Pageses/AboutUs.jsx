@@ -9,9 +9,6 @@ const AboutUs = () => {
   return (
     
    <div>
-    <div>
-        <NavBar></NavBar>
-    </div>
      <div className="bg-base-100 py-16 px-4 sm:px-8 md:px-16 lg:px-24 text-base-content">
       <div className="max-w-6xl mx-auto text-center">
         <Link to={"/"} className="text-4xl font-bold mb-4 text-blue-600">About ManageEM</Link>
@@ -54,10 +51,6 @@ const AboutUs = () => {
           </Link>
         </div>
       </div>
-    </div>
-
-    <div>
-        <Footer></Footer>
     </div>
    </div>
   );
