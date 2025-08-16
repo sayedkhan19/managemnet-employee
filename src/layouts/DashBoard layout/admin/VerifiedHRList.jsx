@@ -7,9 +7,9 @@ import { FaTable, FaThLarge } from "react-icons/fa";
 const VerifiedHRList = () => {
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
-  const [viewMode, setViewMode] = useState("table");
+  const [viewMode, setViewMode] = useState("card"); // 👉 default card view
 
-  // Fetch users with fresh data always
+  // ✅ Fetch users with fresh data always
   const { data: users = [], isLoading, error } = useQuery({
     queryKey: ["verifiedUsers"],
     queryFn: async () => {
@@ -24,7 +24,7 @@ const VerifiedHRList = () => {
     refetchOnMount: true,
   });
 
-  // Mutation with optimistic update
+  // ✅ Mutation with optimistic update
   const toggleFireMutation = useMutation({
     mutationFn: async (email) => {
       const res = await axiosSecure.patch(`/toggle-fire/${email}`);
@@ -32,10 +32,8 @@ const VerifiedHRList = () => {
     },
     onMutate: async (email) => {
       await queryClient.cancelQueries(["verifiedUsers"]);
-
       const previousUsers = queryClient.getQueryData(["verifiedUsers"]);
 
-      // Optimistically update the cache to immediately reflect UI change
       queryClient.setQueryData(["verifiedUsers"], (oldUsers) =>
         oldUsers.map((user) =>
           user.email === email ? { ...user, ifFired: !user.ifFired } : user
@@ -45,12 +43,10 @@ const VerifiedHRList = () => {
       return { previousUsers };
     },
     onError: (err, email, context) => {
-      // Rollback to previous cache on error
       queryClient.setQueryData(["verifiedUsers"], context.previousUsers);
       Swal.fire("Error", "Failed to toggle fire status.", "error");
     },
     onSettled: () => {
-      // Refetch fresh data regardless of success/error to sync cache
       queryClient.invalidateQueries(["verifiedUsers"]);
     },
     onSuccess: (data) => {
@@ -73,37 +69,31 @@ const VerifiedHRList = () => {
     });
   };
 
-  if (isLoading) return <div className="p-4">Loading...</div>;
+  if (isLoading) return <span className="loading loading-bars loading-xl"></span>;
   if (error) return <div className="p-4 text-red-500">Failed to load data</div>;
 
   return (
     <div className="p-4 max-w-6xl mx-auto">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-2">
-        <h2 className="text-2xl font-bold text-blue-600">
-          ✅ Verified HRs & Verified Employees
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-xl md:text-2xl font-bold text-blue-600">
+          ✅ Verified HRs & Employees
         </h2>
         <button
           onClick={() => setViewMode(viewMode === "table" ? "card" : "table")}
-          className="btn btn-sm flex items-center gap-2 bg-blue-600 text-white hover:bg-blue-700"
+          className="p-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition flex items-center justify-center"
+          title={viewMode === "table" ? "Switch to Card View" : "Switch to Table View"}
         >
-          {viewMode === "table" ? (
-            <>
-              <FaThLarge /> Card View
-            </>
-          ) : (
-            <>
-              <FaTable /> Table View
-            </>
-          )}
+          {viewMode === "table" ? <FaThLarge size={18} /> : <FaTable size={18} />}
         </button>
       </div>
 
       {users.length === 0 ? (
         <p className="text-gray-600">No matching users found.</p>
       ) : viewMode === "table" ? (
-        <div className="overflow-x-auto">
-          <table className="table w-full border rounded-xl">
-            <thead className="bg-blue-50 text-left">
+        // ✅ Table View
+        <div className="overflow-x-auto rounded shadow bg-white">
+          <table className="table w-full text-sm md:text-base">
+            <thead className="bg-gray-100">
               <tr>
                 <th>#</th>
                 <th>Photo</th>
@@ -116,25 +106,22 @@ const VerifiedHRList = () => {
             </thead>
             <tbody>
               {[...users].reverse().map((user, index) => (
-
                 <tr
                   key={user.email}
-                  className={user.ifFired ? "bg-red-100" : "bg-green-50"}
+                  className={`hover:bg-gray-50 ${
+                    user.ifFired ? "bg-red-50" : "bg-green-50"
+                  }`}
                 >
                   <td>{users?.length - index}</td>
-
                   <td>
-                    {user.photoURL ? (
-                      <img
-                        src={user.photoURL}
-                        alt={user.name}
-                        className="w-12 h-12 rounded-full object-cover border"
-                      />
-                    ) : (
-                      <div className="w-12 h-12 bg-gray-200 flex items-center justify-center rounded-full text-sm text-gray-600">
-                        N/A
-                      </div>
-                    )}
+                    <img
+                      src={
+                        user.photoURL ||
+                        "https://via.placeholder.com/80x80?text=No+Image"
+                      }
+                      alt={user.name}
+                      className="w-12 h-12 rounded-full object-cover border"
+                    />
                   </td>
                   <td>{user.name}</td>
                   <td className="break-all">{user.email}</td>
@@ -169,13 +156,13 @@ const VerifiedHRList = () => {
           </table>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[...users].reverse().map((user) => (
-
+        // ✅ Card View (same style as Payment)
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {[...users].reverse().map((user, index) => (
             <div
               key={user.email}
-              className={`p-4 rounded-lg shadow border flex flex-col justify-between h-full ${
-                user.ifFired ? "bg-red-50" : "bg-green-50"
+              className={`rounded-2xl shadow bg-white p-4 flex flex-col justify-between hover:shadow-lg transition-all ${
+                user.ifFired ? "border border-red-300 bg-red-50" : "border border-green-300 bg-green-50"
               }`}
             >
               <div className="flex items-center gap-4 mb-4">
@@ -188,13 +175,12 @@ const VerifiedHRList = () => {
                   className="w-16 h-16 rounded-full object-cover border"
                 />
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-lg font-semibold break-words">
-                    {user.name}
-                  </h3>
+                  <h3 className="text-lg font-semibold break-words">{user.name}</h3>
                   <p className="text-sm text-gray-500 break-words">{user.email}</p>
                 </div>
               </div>
-              <div className="mb-2 text-sm">
+
+              <div className="space-y-1 text-sm">
                 <p>
                   <span className="font-medium">Role:</span>{" "}
                   <span className="capitalize">{user.role}</span>
@@ -208,10 +194,11 @@ const VerifiedHRList = () => {
                   )}
                 </p>
               </div>
+
               <button
                 onClick={() => handleToggleFire(user)}
                 disabled={toggleFireMutation.isLoading}
-                className={`btn btn-sm mt-3 w-full text-white font-medium rounded ${
+                className={`btn btn-sm mt-4 w-full text-white font-medium rounded ${
                   user.ifFired
                     ? "bg-red-600 hover:bg-red-700"
                     : "bg-blue-600 hover:bg-blue-700"

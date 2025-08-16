@@ -36,7 +36,7 @@ const SalaryInfoAll = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
 
-  if (isLoading) return <div className="text-center py-10">Loading...</div>;
+  if (isLoading) return <span className="loading loading-bars loading-xl"></span>;
 
   return (
     <div className="p-4">

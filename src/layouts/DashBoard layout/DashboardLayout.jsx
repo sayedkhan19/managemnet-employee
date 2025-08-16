@@ -96,7 +96,7 @@ const DashboardLayout = () => {
               </NavLink>
              
               <NavLink to="/dashboard/message" className={linkClass} onClick={() => setDrawerOpen(false)}>
-                <FaEnvelope className="inline-block mr-2" /> All Message
+              <FaEnvelope className="inline-blockPdash" />All Message
               </NavLink>
             </>
           )}

@@ -51,7 +51,7 @@ const ContactMessages = () => {
   }, []);
 
   if (loading) {
-    return <p className="text-center py-10">Loading messages...</p>;
+    return <span className="loading loading-bars loading-xl"></span>;
   }
 
   return (

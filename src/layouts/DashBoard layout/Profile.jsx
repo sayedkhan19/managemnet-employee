@@ -16,7 +16,7 @@ const Profile = () => {
     },
   });
 
-  if (loading || isLoading) return <p className="text-center">Loading...</p>;
+  if (loading || isLoading) return <span className="loading loading-bars loading-xl"></span>; //now new one
 
   if (!userInfo?.email) {
     return <p className="text-center text-red-500">User info not found.</p>;
