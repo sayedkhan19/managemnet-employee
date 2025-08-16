@@ -9,11 +9,11 @@ const AuthLayout = () => {
       <div className="w-full max-w-6xl bg-white shadow-2xl rounded-2xl overflow-hidden flex flex-col-reverse md:flex-row items-center">
         
         {/* Form Section */}
-        <div className="w-full md:w-1/2 p-4 sm:p-10">
+        <div className="w-full md:w-1/2 p-4 sm:p-4">
           {/* Logo Top Left Inside Card */}
           <Link
             to="/"
-            className="text-2xl font-bold text-blue-600 mb-6 flex items-center gap-2"
+            className="text-2xl font-bold text-blue-600 flex items-center gap-2"
           >
             📋 <span>ManageEm</span>
           </Link>

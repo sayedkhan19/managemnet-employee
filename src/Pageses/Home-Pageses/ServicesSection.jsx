@@ -17,8 +17,8 @@ const services = [
 
 const ServicesSection = () => {
   return (
-    <div className="py-16 px-6 bg-white">
-      <h2 className="text-3xl font-bold text-center mb-10">Our Services</h2>
+    <div className="w-full py-16 bg-white">
+      <h2 className="text-3xl font-bold text-center mb-10 text-blue-800">Our Services</h2>
       <div className="grid gap-8 md:grid-cols-3">
         {services.map((service, idx) => (
           <div

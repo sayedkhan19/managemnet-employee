@@ -36,7 +36,7 @@ const linkClass = ({ isActive }) =>
   );
 
   return (
-    <div className="navbar w-full bg-base-100 sticky top-0 z-50 px-5">
+    <div className="navbar w-full bg-base-100 sticky top-0 z-50">
       {/* Start - Logo and Mobile Menu */}
       <div className="navbar-start">
         <div className="dropdown">

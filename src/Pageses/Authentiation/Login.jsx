@@ -74,7 +74,7 @@ const handleGoogleSignIn = () => {
     <div className="min-h-screen flex items-center justify-center px-4">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white p-8 rounded shadow-md w-full max-w-md space-y-4"
+        className="bg-white p-4 rounded shadow-md w-full max-w-md space-y-4"
       >
         <h2 className="text-xl font-bold text-center text-blue-700">
           Login to Your Account

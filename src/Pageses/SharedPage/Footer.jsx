@@ -30,8 +30,8 @@ const Footer = () => {
               </>
             }
             
-            <li><Link className="hover:underline" to="/dashboard">Dashboard</Link></li>
-            <li><Link className="hover:underline" to="/contact-us">Contact Us</Link></li>
+            <li><Link className="hover:underline" to="/about">About</Link></li>
+            <li><Link className="hover:underline" to="/contact">Contact Us</Link></li>
           </ul>
         </div>
 

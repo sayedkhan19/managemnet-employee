@@ -6,7 +6,7 @@ const HeroSection = () => {
   const { user } = useAuth();
 
   return (
-    <div className="bg-gradient-to-r from-blue-100 to-white py-16 sm:py-20 px-4 sm:px-6 text-center">
+    <div className="w-full bg-gradient-to-r from-blue-100 to-white py-16 sm:py-20 text-center">
       <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 max-w-3xl mx-auto leading-tight">
         <span className='text-blue-600'>Empowering</span> Your Workforce with Smart <span className='text-blue-600'>Management</span>
       </h1>

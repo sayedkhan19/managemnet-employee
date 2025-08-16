@@ -26,8 +26,8 @@ const testimonials = [
 
 const TestimonialsSection = () => {
   return (
-    <div className="bg-blue-50 py-16 px-4 sm:px-6 overflow-hidden">
-      <h2 className="text-3xl sm:text-4xl font-bold text-center mb-10 text-gray-800">
+    <div className="bg-blue-50 py-16 px-4 sm:px-6 overflow-hidden w-full mx-auto">
+      <h2 className="text-3xl sm:text-4xl font-bold text-center mb-10 text-blue-800">
         What Our Users Say
       </h2>
       <div className="relative w-full max-w-7xl mx-auto">

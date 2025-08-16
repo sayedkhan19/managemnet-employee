@@ -26,16 +26,16 @@ const features = [
 
 const FeatureHighlights = () => {
   return (
-    <section className="py-12 md:py-16 bg-gray-50">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-gray-800">
+    <section className="py-12 md:py-16 bg-gray-50 w-full mx-auto">
+      <div className="w-full mx-auto px-2 sm:px-6 text-center">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-blue-800">
           Why Choose Our System?
         </h2>
         <p className="text-gray-600 mb-10 sm:mb-12 text-sm sm:text-base">
           Smart tools designed to manage your entire workforce efficiently.
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full mx-auto">
           {features.map((item, i) => (
             <div
               key={i}

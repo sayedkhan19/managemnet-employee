@@ -11,6 +11,8 @@ import FeatureHighlights from './FeatureHighlights';
 import KeyMetricsSection from './KeyMetricsSection';
 import WorkflowSection from './WorkflowSection';
 import CallToActionSection from './CallToActionSection';
+import FeaturesSection from './FeaturesSection';
+import TrustedClients from './TrustedClients';
 
 const Home = () => {
     return (
@@ -25,6 +27,8 @@ const Home = () => {
             <KeyMetricsSection></KeyMetricsSection>
             <WorkflowSection></WorkflowSection>
             <CallToActionSection></CallToActionSection>
+            {/* <FeaturesSection></FeaturesSection> */}
+            <TrustedClients></TrustedClients>
             
        
         </div>
