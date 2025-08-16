@@ -128,10 +128,10 @@ const onSubmit = async (data) => {
 
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8">
+    <div className="w-full px-4">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white p-8 rounded-md shadow-md w-full max-w-lg space-y-4"
+        className="bg-white p-4 rounded shadow-md w-full max-w-md mx-auto space-y-4"
       >
         <h2 className="text-2xl font-bold text-center text-blue-700">
           Create an Account
