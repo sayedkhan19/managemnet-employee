@@ -10,8 +10,8 @@ const KeyMetricsSection = () => {
   ];
 
   return (
-    <section className="py-16 bg-blue-50">
-      <div className="max-w-7xl mx-auto">
+    <section className="py-16 bg-blue-50 px-8">
+      <div className="w-full mx-auto ">
         <h2 className="text-3xl font-bold text-center text-blue-800 mb-12">Our Impact in Numbers</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
           {metrics.map((metric, idx) => (
