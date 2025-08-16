@@ -56,7 +56,7 @@ const Progress = () => {
   const employeeOptions = allUsers.filter((user) => user.role === 'Employee');
 
   return (
-    <div className="p-4 max-w-5xl mx-auto">
+    <div className="p-4 max-w-5xl mx-auto bg-base-100 text-base-content">
       {/* Filter Section */}
       <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-6 mt-4">
         {/* Dropdown for selecting employee */}
@@ -103,23 +103,23 @@ const Progress = () => {
           worksheets.map((item, idx) => (
             <div
               key={item._id}
-              className="p-4 rounded-lg shadow-md border bg-white hover:shadow-lg transition"
+              className="p-4 rounded-lg shadow-md border bg-base-100 text-base-content hover:shadow-lg transition "
             >
-              <div className="flex justify-between items-center mb-2">
+              <div className="flex justify-between items-center mb-2 text-base-content">
                 <h3 className="text-lg font-semibold text-blue-600">
                   {item.task}
                 </h3>
-                <span className="text-sm text-gray-500">
+                <span className="text-sm text-base-content">
                   #{idx + 1}
                 </span>
               </div>
-              <p className="text-gray-700">
+              <p className="text-base-content">
                 <span className="font-medium">Hours:</span> {item.hours}
               </p>
-              <p className="text-gray-700">
+              <p className="text-base-content">
                 <span className="font-medium">Email:</span> {item.email}
               </p>
-              <p className="text-gray-700">
+              <p className="text-base-content">
                 <span className="font-medium">Date:</span> {item.date}
               </p>
             </div>

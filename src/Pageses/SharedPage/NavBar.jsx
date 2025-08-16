@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink, useNavigate } from 'react-router';
 import useAuth from '../../hooks/useAuth';
 import toast from 'react-hot-toast';
+import ThemeToggle from '../Theme/ThemeToggle';
 
 const NavBar = () => {
   const { user, logOut } = useAuth();
@@ -65,6 +66,7 @@ const linkClass = ({ isActive }) =>
 
       {/* End - User Info and Auth Buttons */}
       <div className="navbar-end space-x-2">
+        {/* <ThemeToggle></ThemeToggle> */}
         {user && (
           <img
             className="rounded-full w-10 h-10 object-cover cursor-pointer"

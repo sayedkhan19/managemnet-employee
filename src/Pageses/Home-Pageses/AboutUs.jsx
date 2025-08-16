@@ -7,7 +7,7 @@ import Footer from '../SharedPage/Footer';
 
 const AboutUs = () => {
   return (
-    
+    //bg-base-100 text-base-content
    <div>
      <div className="bg-base-100 py-16 px-4 sm:px-8 md:px-16 lg:px-24 text-base-content">
       <div className="max-w-6xl mx-auto text-center">
